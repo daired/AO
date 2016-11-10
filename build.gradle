@@ -1,0 +1,37 @@
+plugins {
+	id 'java'
+	id 'eclipse'
+	id 'idea'
+}
+
+tasks.withType(AbstractCompile)*.options*.encoding = "UTF-8"
+sourceCompatibility = targetCompatibility = 1.8
+
+def projectName = 'M10_Algorithms_and_Optimizations'
+eclipse.project.name = projectName
+idea.module.name = projectName
+
+repositories {
+    mavenCentral()
+        maven {
+		url 'http://maven.visual-computing.com/'
+	}	
+}
+
+dependencies {
+	compile fileTree('lib'),			// verwende alle Jars im Lib Verzeichnis
+			'commons-collections:commons-collections:3.2';
+	testCompile 'junit:junit:4.+';		// jUnit für alle Tests 
+}
+
+test {
+    systemProperties 'property': 'value'
+}
+
+uploadArchives {
+    repositories {
+       flatDir {
+           dirs 'repos'
+       }
+    }
+}

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="hk.htw.ao.test.TestLab01" tests="1" skipped="0" failures="0" errors="0" timestamp="2016-11-02T12:26:05" hostname="DAiRed-AiR.local" time="0.005">
+  <properties/>
+  <testcase name="canConstructAPersonWithAName" classname="hk.htw.ao.test.TestLab01" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
