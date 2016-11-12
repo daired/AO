@@ -2,6 +2,8 @@ package hk.htw.ao.util;
 
 import java.math.BigInteger;
 
+import hk.htw.ao.control.GCDRekursivController;
+
 public class OptimizedCalculator {
 
 	private final OptimizedRandom RANDOM = OptimizedRandom.getInstance();
@@ -22,17 +24,19 @@ public class OptimizedCalculator {
 	}
 
 	/**
+	 * INGUI
 	 * GCD Mod Methode - rekursive Implementation
 	 */
-	public BigInteger fibonacci(BigInteger n) {
+	public BigInteger fibRekursiv(BigInteger n) {
 		return (n.compareTo(new BigInteger("1")) <= 0) ? n
-				: fibonacci(n.subtract(BigInteger.ONE)).add(fibonacci(n.subtract(new BigInteger("2"))));
+				: fibRekursiv(n.subtract(BigInteger.ONE)).add(fibRekursiv(n.subtract(new BigInteger("2"))));
 	}
 
 	/**
-	 * GCD Mod Methode - optimierte Implementation
+	 * INGUI
+	 * Fib optimierte Implementation
 	 */
-	public BigInteger fibonacci2(BigInteger n) {
+	public BigInteger fibIterativ(BigInteger n) {
 
 		if (n.equals(BigInteger.ZERO))
 			return BigInteger.ZERO;
@@ -50,16 +54,22 @@ public class OptimizedCalculator {
 	}
 
 	/**
+	 * INGUI
+	 * 
 	 * GCD Mod Methode - rekursive Implementation
 	 */
-	public BigInteger gcdMod(BigInteger a, BigInteger b) {
-		return b.equals(BigInteger.ZERO) ? a : gcdMod(b, a.mod(b));
+	public BigInteger gcdRekursiv(BigInteger a, BigInteger b) {
+		return b.equals(BigInteger.ZERO) ? a : gcdRekursiv(b, a.mod(b));
 	}
 
 	/**
+	 * 
+	 * INGUI
+	 * 
+	 * 
 	 * GCD Mod Methode - iterative Implementation
 	 */
-	public BigInteger gcdMod2(BigInteger a, BigInteger b) {
+	public BigInteger gcdIterativ(BigInteger a, BigInteger b) {
 		while (!b.equals(BigInteger.ZERO)) {
 			BigInteger tmp = b;
 			b = a.mod(b);
@@ -69,6 +79,7 @@ public class OptimizedCalculator {
 	}
 
 	/**
+	 * NOGUI
 	 * Ackermann Funktion int
 	 */
 	public int ackermannFuncInt(int m, int n) {
@@ -81,6 +92,9 @@ public class OptimizedCalculator {
 	}
 
 	/**
+	 * INGUI
+	 * 
+	 * 
 	 * Ackermann Funktion BigInteger
 	 */
 	public BigInteger ackermannFunc(BigInteger m, BigInteger n) {
@@ -94,6 +108,8 @@ public class OptimizedCalculator {
 
 
 	/**
+	 * 
+	 * INGUI
 	 * Optional Hausaufgabe 3
 	 * @param a
 	 * @param n
@@ -128,6 +144,8 @@ public class OptimizedCalculator {
 	
 	
 	/**
+	 * NOGUI
+	 * 
 	 * modulares Potenzieren (a^n mod m)
 	 *	a: Basis
 	 *	n: Exponent

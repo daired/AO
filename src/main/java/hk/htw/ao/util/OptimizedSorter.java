@@ -27,9 +27,55 @@ public class OptimizedSorter {
 	 * rekursiv!
 	 *
 	 */
-	public List<BigInteger> mergeSort(){
-		List<BigInteger> sorted = new ArrayList<BigInteger>();
-		return sorted;
+	public void mergeSort(BigInteger[] array){
+		
+		if (array.length > 1) {
+			int q = array.length / 2;
+			BigInteger[] l = new BigInteger[q];
+			for(int i = 0; i<= l.length-1; i++)
+				l[i] = array[i];
+			
+			BigInteger[] r = new BigInteger[array.length-q];
+			for(int i = q; i <= array.length-1; i++)
+				r[i - q] = array[i];
+			
+			mergeSort(l);
+			mergeSort(r);
+	
+			array = merge(l,r);
+		}
+	}
+	
+	private BigInteger[] merge(BigInteger[] l, BigInteger[] r){
+		BigInteger[] array = new BigInteger[l.length + r.length];
+		int iL = 0;
+		int iR = 0;
+		int iRes = 0;
+		
+		while (iL < l.length && iR < r.length) {
+			if (l[iL].compareTo(r[iR]) < 0) {
+				array[iRes] = l[iL];
+				iL += 1;
+			} else {
+				array[iRes] = r[iR];
+				iR++;
+			}
+			iRes++;
+		}
+
+		while (iL < l.length) {
+			array[iRes] = l[iL];
+			iL++;
+			iRes++;
+		}
+
+		while (iR < r.length) {
+			array[iRes] = r[iR];
+			iR++;
+			iRes++;
+		}
+		
+		return array;
 	}
 	
 	/**

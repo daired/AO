@@ -1,40 +1,60 @@
 package hk.htw.ao;
 
 import java.io.PrintStream;
-import java.math.BigInteger;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
+import hk.htw.ao.control.AckermannController;
+import hk.htw.ao.control.FibIterativController;
+import hk.htw.ao.control.FibRekursivController;
+import hk.htw.ao.control.GCDExtendedController;
+import hk.htw.ao.control.GCDIterativController;
+import hk.htw.ao.control.GCDRekursivController;
+import hk.htw.ao.control.ModPowController;
+import hk.htw.ao.control.PowController;
+import hk.htw.ao.control.abs.MethodeController;
 import hk.htw.ao.gui.Console;
+import hk.htw.ao.gui.ParameterPaneItem;
 import hk.htw.ao.util.CanvasDrawingTool;
-import hk.htw.ao.util.OptimizedCalculator;
-import hk.htw.ao.util.OptimizedRandom;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class Main extends Application {
+public class Main extends Application implements ChangeListener<String> {
 
-	private final OptimizedCalculator CALCULATOR = OptimizedCalculator.getInstance();
-	private final OptimizedRandom RANDOM = OptimizedRandom.getInstance();
 
+	private List<MethodeController> controls = new ArrayList<MethodeController>();
+	private List<ParameterPaneItem> ppis = new ArrayList<ParameterPaneItem>();
+
+	private MethodeController currentController;
 	private CanvasDrawingTool cdt;
+	
+	private Text titlePaneTitle;
+	private TextArea descriptionArea;
+	private Button btnRun;
+	private CheckBox checkboxTest;
+	private ParameterPaneItem ppi00 = new ParameterPaneItem();
+	private ParameterPaneItem ppi01 = new ParameterPaneItem();
+	private ParameterPaneItem ppi02 = new ParameterPaneItem();
+	private ParameterPaneItem ppi03 = new ParameterPaneItem();
 
 	public static void main(String[] args) throws Exception {
 
@@ -43,469 +63,216 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-		primaryStage.setTitle("M10 Algorithms & Optimization - OptimizedCalculator");
-
-		// Create Grig Layout
-		BorderPane border = new BorderPane();
-		GridPane grid = new GridPane();
-		grid.setAlignment(Pos.CENTER);
-		grid.setHgap(10);
-		grid.setVgap(10);
-		grid.setPadding(new Insets(25, 25, 25, 25));
-		border.setCenter(grid);
-
-		Canvas canvas = new Canvas(300, 300);
-		GraphicsContext gc = canvas.getGraphicsContext2D();
-		cdt = new CanvasDrawingTool(gc);
-
-		cdt.getGraphicsContext().setFill(Color.BLUE);
-		cdt.getGraphicsContext().fillRect(280, 0, 20, 20);
-		cdt.getGraphicsContext().setFill(Color.GREEN);
-		cdt.getGraphicsContext().fillRect(0, 280, 20, 20);
-		cdt.getGraphicsContext().setFill(Color.YELLOW);
-		cdt.getGraphicsContext().fillRect(0, 0, 20, 20);
-		cdt.getGraphicsContext().setFill(Color.RED);
-		cdt.getGraphicsContext().fillRect(280, 280, 20, 20);
-
-		border.setRight(canvas);
-
-		Scene scene = new Scene(border, 900, 500);
-		primaryStage.setScene(scene);
-
-		// Input Elements
-		Text scenetitle = new Text("Welcome. Please type in parameters and choose a methode.");
-		scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 14));
-		grid.add(scenetitle, 0, 0, 2, 1);
-
-		final TextField tfParameter1 = new TextField();
-		grid.add(tfParameter1, 0, 2);
-
-		Button random1 = new Button("Random 1000Bit");
-		HBox hbRandom1 = new HBox(10);
-		hbRandom1.setAlignment(Pos.BOTTOM_RIGHT);
-		hbRandom1.getChildren().add(random1);
-		grid.add(hbRandom1,0, 1);
-		random1.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent e) {
-				tfParameter1.setText("" + RANDOM.generatePositiveRandomByBitLength(1000) + "");
-			}
-		});
+		
 
 		
-		final TextField tfParameter2 = new TextField();
-		grid.add(tfParameter2, 1, 2);
+		primaryStage.setTitle("M10 Algorithms & Optimization");
+		BorderPane borderPane = new BorderPane();
+		borderPane.setPadding(new Insets(10, 10, 10, 10));
 		
-		Button random2 = new Button("Random 1000Bit");
-		HBox hbRandom2 = new HBox(10);
-		hbRandom2.setAlignment(Pos.BOTTOM_RIGHT);
-		hbRandom2.getChildren().add(random2);
-		grid.add(hbRandom2,1, 1);
-		random2.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent e) {
-				tfParameter2.setText("" + RANDOM.generatePositiveRandomByBitLength(1000) + "");
+		controls.add(new ModPowController());
+		controls.add(new PowController());
+		controls.add(new GCDExtendedController());
+		controls.add(new GCDIterativController());
+		controls.add(new GCDRekursivController());
+		controls.add(new AckermannController());	
+		controls.add(new FibRekursivController());	
+		controls.add(new FibIterativController());	
+
+		
+		/**
+		 * MethodePane
+		 */
+		VBox methodePane = new VBox(10);
+		methodePane.setAlignment(Pos.TOP_LEFT);
+		methodePane.setPadding(new Insets(10, 10, 10, 0));
+		
+
+		ComboBox<String> methodeComboBox = new ComboBox<String>();
+		methodeComboBox.setMinWidth(300);
+		methodeComboBox.setMaxWidth(300);
+		for(MethodeController control : controls)
+			methodeComboBox.getItems().add(control.getTitle());
+		// Add this as changeListener --> methode changed(...)
+		methodeComboBox.valueProperty().addListener(this);
+		methodeComboBox.setPromptText("Please choose a methode");
+		
+		descriptionArea = new TextArea();
+		descriptionArea.setMinWidth(300);
+		descriptionArea.setMaxWidth(300);
+		descriptionArea.setMinHeight(100);
+		descriptionArea.setMaxHeight(100);
+		descriptionArea.setBackground(Background.EMPTY);
+		descriptionArea.setStyle("-fx-control-inner-background: #F4F4F4");
+
+		descriptionArea.setEditable(false);
+		descriptionArea.setFocusTraversable(false);
+		descriptionArea.setWrapText(true);
+		
+		methodePane.getChildren().addAll(methodeComboBox,descriptionArea);
+		
+
+		
+		/**
+		 * InputPane
+		 */
+		VBox inputPane = new VBox(10);
+		inputPane.setAlignment(Pos.TOP_CENTER);
+		inputPane.setPadding(new Insets(10, 10, 10, 10));
+
+		ppi00.getValueTextField().textProperty().addListener(new ChangeListener<String>() {
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				currentController.setParamterValues(0,newValue);
 			}
 		});
-
-		final TextField tfParameter3 = new TextField();
-		grid.add(tfParameter3, 2, 2);
-
-		Button random3 = new Button("Random 1000Bit");
-		HBox hbRandom3 = new HBox(10);
-		hbRandom3.setAlignment(Pos.BOTTOM_RIGHT);
-		hbRandom3.getChildren().add(random3);
-		grid.add(hbRandom3, 2, 1);
-		random3.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent e) {
-				tfParameter3.setText("" + RANDOM.generatePositiveRandomByBitLength(1000) + "");
+		ppi01.getValueTextField().textProperty().addListener(new ChangeListener<String>() {
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				currentController.setParamterValues(1,newValue);
+			}
+		});
+		ppi02.getValueTextField().textProperty().addListener(new ChangeListener<String>() {
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				currentController.setParamterValues(2,newValue);
+			}
+		});
+		ppi03.getValueTextField().textProperty().addListener(new ChangeListener<String>() {
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				currentController.setParamterValues(3,newValue);
 			}
 		});
 		
+		ppis.add(ppi00);
+		ppis.add(ppi01);
+		ppis.add(ppi02);
+		ppis.add(ppi03);
+		inputPane.getChildren().addAll(ppi00, ppi01, ppi02, ppi03);
+	
+
+
+		
+		
+		/**
+		 * TitlePane
+		 */
+		HBox titlePane = new HBox();
+		titlePane.setAlignment(Pos.TOP_LEFT);
+		titlePane.setPadding(new Insets(10, 0, 10, 0));
+		
+		titlePaneTitle = new Text("Welcome. Please choose a methode.");
+		titlePaneTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
+		//titlePaneTitle.setTextAlignment(TextAlignment.LEFT);
+		
+		titlePane.getChildren().addAll(titlePaneTitle);
+	
+
+		
+		
+		/**
+		 * ViewPane
+		 */
+		HBox viewPane = new HBox();
+		viewPane.setAlignment(Pos.BOTTOM_RIGHT);
 		// Console
 		TextArea ta = new TextArea();
+		ta.setMinWidth(600);
+		ta.setEditable(false);
+		ta.setWrapText(true);
 		Console console = new Console(ta);
 		PrintStream ps = new PrintStream(console, true);
 		System.setOut(ps);
 		System.setErr(ps);
-		border.setBottom(ta);
+	
+		//Canvas
+		Canvas canvas = new Canvas(300, 300);
+		GraphicsContext gc = canvas.getGraphicsContext2D();
+		cdt = new CanvasDrawingTool(gc);
+		cdt.getGraphicsContext().setFill(Color.BLACK);
+		cdt.getGraphicsContext().fillRect(295, 0, 5, 5);
+		cdt.getGraphicsContext().setFill(Color.BLACK);
+		cdt.getGraphicsContext().fillRect(0, 295, 5, 5);
+		cdt.getGraphicsContext().setFill(Color.BLACK);
+		cdt.getGraphicsContext().fillRect(0, 0, 5, 5);
+		cdt.getGraphicsContext().setFill(Color.BLACK);
+		cdt.getGraphicsContext().fillRect(295, 295, 5, 5);
 
-		// Button btnExtendedGCD
-		Button btnExtendedGCD = new Button("Extended GCD");
-		HBox hbBtn3 = new HBox(10);
-		hbBtn3.setAlignment(Pos.BOTTOM_RIGHT);
-		hbBtn3.getChildren().add(btnExtendedGCD);
-		grid.add(hbBtn3, 0, 7);
-
-		// Button GCD Mod rekursiv
-		Button btnGCDModRecursiv = new Button("GCD Mod rekursiv");
-		HBox hbBtn = new HBox(10);
-		hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
-		hbBtn.getChildren().add(btnGCDModRecursiv);
-		grid.add(hbBtn, 1, 7);
-
-		// Button GCD Mod iterativ
-		Button btnGCDModIterativ = new Button("GCD Mod iterativ");
-		HBox hbBtn2 = new HBox(10);
-		hbBtn2.setAlignment(Pos.BOTTOM_RIGHT);
-		hbBtn2.getChildren().add(btnGCDModIterativ);
-		grid.add(hbBtn2, 2, 7);
-
-		// Button fibbonacci rekursiv
-		Button btnFibRec = new Button("fibbonacci rekursiv");
-		HBox hbBtn4 = new HBox(10);
-		hbBtn4.setAlignment(Pos.BOTTOM_RIGHT);
-		hbBtn4.getChildren().add(btnFibRec);
-		grid.add(hbBtn4, 3, 7);
-
-		// Button fibbonacci iterativ
-		Button btnFibIterativ = new Button("fibbonacci iterativ");
-		HBox hbBtn5 = new HBox(10);
-		hbBtn5.setAlignment(Pos.BOTTOM_RIGHT);
-		hbBtn5.getChildren().add(btnFibIterativ);
-		grid.add(hbBtn5, 0, 8);
-
-		// Button Pytagoras Tree
-		Button btnPytagorasTree = new Button("Pytagoras Tree");
-		HBox hbBtn6 = new HBox(10);
-		hbBtn6.setAlignment(Pos.BOTTOM_RIGHT);
-		hbBtn6.getChildren().add(btnPytagorasTree);
-		grid.add(hbBtn6, 1, 8);
-
-		// Button Ackermann
-		Button btnAckermann = new Button("Ackermann Funktion");
-		HBox hbBtn7 = new HBox(10);
-		hbBtn7.setAlignment(Pos.BOTTOM_RIGHT);
-		hbBtn7.getChildren().add(btnAckermann);
-		grid.add(hbBtn7, 2, 8);
-
-		Button btnPotenz = new Button("bigPow(a,n)");
-		HBox hbBtn10 = new HBox(10);
-		hbBtn10.setAlignment(Pos.BOTTOM_RIGHT);
-		hbBtn10.getChildren().add(btnPotenz);
-		grid.add(hbBtn10, 3, 8);
-		
-		Button btnPotenzModulo = new Button("PowMod(a,n,m)");
-		HBox hbBtn8 = new HBox(10);
-		hbBtn8.setAlignment(Pos.BOTTOM_RIGHT);
-		hbBtn8.getChildren().add(btnPotenzModulo);
-		grid.add(hbBtn8, 4, 8);
-		
-		Button btnPotenzModuloTest = new Button("Test PowMod");
-		HBox hbBtn9 = new HBox(10);
-		hbBtn9.setAlignment(Pos.BOTTOM_RIGHT);
-		hbBtn9.getChildren().add(btnPotenzModuloTest);
-		grid.add(hbBtn9, 4, 7);
-
-		
-		Button btnRabinMiller = new Button("RabinMiller");
-		HBox hbBtn11 = new HBox(10);
-		hbBtn11.setAlignment(Pos.BOTTOM_RIGHT);
-		hbBtn11.getChildren().add(btnRabinMiller);
-		grid.add(hbBtn11, 4, 9);
+		viewPane.getChildren().addAll(ta,canvas);
 		
 		
-		// Text
-		final Text outputText = new Text();
-		grid.add(outputText, 1, 6);
+		/**
+		 * ButtonPane
+		 */
+		VBox buttonPane = new VBox(10);
+		buttonPane.setAlignment(Pos.TOP_LEFT);
+		buttonPane.setPadding(new Insets(10, 0, 10, 10));
 
-		// Handle
-		btnGCDModRecursiv.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent e) {
-				// outputText.setFill(Color.SEAGREEN);
-				// outputText.setText("Sign in button pressed");
-				if (!tfParameter1.getText().trim().isEmpty() && !tfParameter2.getText().trim().isEmpty()) {
-					BigInteger a = new BigInteger(tfParameter1.getText());
-					BigInteger b = new BigInteger(tfParameter2.getText());
-					long startTime = System.nanoTime();
-					BigInteger res = CALCULATOR.gcdMod2(a, b);
-					long endTime = System.nanoTime();
-
-					System.out.println(" ");
-					System.out.println("_________________________________________________");
-					System.out.println(" ");
-					System.out.println("GCD_Mod_recursiv(" + a + ", " + b + ") = " + res);
-					System.out.println(" ");
-					System.out.println(
-							"CPU time: \t" + (endTime - startTime) + " nanoseconds, " + ((endTime - startTime) / 1000)
-									+ " mircoseconds, " + ((endTime - startTime) / 1000000) + " milliseconds");
-					System.out.println(" ");
-					System.out.println("_________________________________________________");
-				} else {
-					System.out.println("Please insert Parameter 1 and 2");
-				}
-			}
-		});
-
-		btnGCDModIterativ.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent e) {
-				if (!tfParameter1.getText().trim().isEmpty() && !tfParameter2.getText().trim().isEmpty()) {
-					BigInteger a = new BigInteger(tfParameter1.getText());
-					BigInteger b = new BigInteger(tfParameter2.getText());
-
-					long startTime = System.nanoTime();
-					BigInteger res = CALCULATOR.gcdMod2(a, b);
-					long endTime = System.nanoTime();
-					System.out.println(" ");
-					System.out.println("_________________________________________________");
-					System.out.println(" ");
-					System.out.println("GCD_Mod_iterativ(" + a + ", " + b + ") = " + res);
-					System.out.println(" ");
-					System.out.println(
-							"CPU time: \t" + (endTime - startTime) + " nanoseconds, " + ((endTime - startTime) / 1000)
-									+ " mircoseconds, " + ((endTime - startTime) / 1000000) + " milliseconds");
-					System.out.println(" ");
-					System.out.println("_________________________________________________");
-				} else {
-					System.out.println("Please insert Parameter 1 and 2");
-				}
-			}
-		});
-
-		btnExtendedGCD.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent e) {
-				if (!tfParameter1.getText().trim().isEmpty() && !tfParameter2.getText().trim().isEmpty()) {
-					BigInteger a = new BigInteger(tfParameter1.getText());
-					BigInteger b = new BigInteger(tfParameter2.getText());
-					long startTime = System.nanoTime();
-					String res = Arrays.toString(CALCULATOR.extendedGCD(a, b));
-					long endTime = System.nanoTime();
-
-					System.out.println(" ");
-					System.out.println("_________________________________________________");
-					System.out.println(" ");
-					System.out.println("extendedGCD(" + a + ", " + b + ") = " + res);
-					System.out.println(" ");
-					System.out.println(
-							"CPU time: \t" + (endTime - startTime) + " nanoseconds, " + ((endTime - startTime) / 1000)
-									+ " mircoseconds, " + ((endTime - startTime) / 1000000) + " milliseconds");
-					System.out.println(" ");
-					System.out.println("_________________________________________________");
-				} else {
-					System.out.println("Please insert Parameter 1 and 2");
-				}
-			}
-		});
-
-		btnFibRec.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent e) {
-				if (!tfParameter1.getText().trim().isEmpty()) {
-					BigInteger n = new BigInteger(tfParameter1.getText());
-					long startTime = System.nanoTime();
-					BigInteger res = CALCULATOR.fibonacci(n);
-					long endTime = System.nanoTime();
-					long duration = endTime - startTime;
-
-					System.out.println(" ");
-					System.out.println("_________________________________________________");
-					System.out.println(" ");
-					System.out.println("fibbonacci(" + n + ") = " + res);
-					System.out.println(" ");
-					System.out.println(
-							"CPU time: \t" + (endTime - startTime) + " nanoseconds, " + ((endTime - startTime) / 1000)
-									+ " mircoseconds, " + ((endTime - startTime) / 1000000) + " milliseconds");
-					System.out.println(" ");
-					System.out.println("_________________________________________________");
-				} else {
-					System.out.println("Please insert Parameter 1");
-				}
-			}
-		});
-
-		btnFibIterativ.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent e) {
-				if (!tfParameter1.getText().trim().isEmpty()) {
-					BigInteger n = new BigInteger(tfParameter1.getText());
-					long startTime = System.nanoTime();
-					BigInteger res = CALCULATOR.fibonacci2(n);
-					long endTime = System.nanoTime();
-					long duration = endTime - startTime;
-
-					System.out.println(" ");
-					System.out.println("_________________________________________________");
-					System.out.println(" ");
-					System.out.println("fibbonacci2(" + n + ") = " + res);
-					System.out.println(" ");
-					System.out.println(
-							"CPU time: \t" + (endTime - startTime) + " nanoseconds, " + ((endTime - startTime) / 1000)
-									+ " mircoseconds, " + ((endTime - startTime) / 1000000) + " milliseconds");
-					System.out.println(" ");
-					System.out.println("_________________________________________________");
-				} else {
-					System.out.println("Please insert Parameter 1");
-				}
-			}
-		});
-		
-		btnRabinMiller.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent e) {
-				if (!tfParameter1.getText().trim().isEmpty()) {
-					BigInteger n = new BigInteger(tfParameter1.getText());
-					long startTime = System.nanoTime();
-					boolean res = CALCULATOR.rabinMiller(n);
-					long endTime = System.nanoTime();
-					long duration = endTime - startTime;
-
-					System.out.println(" ");
-					System.out.println("_________________________________________________");
-					System.out.println(" ");
-					System.out.println("rabinMiller(" + n + ") \n = " + res);
-					System.out.println(" ");
-					System.out.println(
-							"CPU time: \t" + (endTime - startTime) + " nanoseconds, " + ((endTime - startTime) / 1000)
-									+ " mircoseconds, " + ((endTime - startTime) / 1000000) + " milliseconds");
-					System.out.println(" ");
-					System.out.println("_________________________________________________");
-				} else {
-					System.out.println("Please insert Parameter 1");
-				}
-			}
-		});
-
-		btnPotenzModuloTest.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent e) {
-
-				final long warmuploops = 0;
-				final long testloops = 1;
-				final int bitlength = 1000;
-				long timetotal = 0;
-				
-				//Warmup Phase
-				for(int i=0;i<warmuploops;i++){
-					BigInteger a = RANDOM.generatePositiveRandomByBitLength(bitlength);
-					BigInteger n = RANDOM.generatePositiveRandomByBitLength(bitlength);
-					BigInteger m = RANDOM.generatePositiveRandomByBitLength(bitlength);
-					CALCULATOR.potenzModuloBig(a, n, m);
-				}
-				
-				//Test Phase
-				for(int j=0;j<testloops;j++){
-					BigInteger a = RANDOM.generatePositiveRandomByBitLength(bitlength);
-					BigInteger n = RANDOM.generatePositiveRandomByBitLength(bitlength);
-					BigInteger m = RANDOM.generatePositiveRandomByBitLength(bitlength);
-
-					long timeStart = System.nanoTime();
-					BigInteger res = CALCULATOR.potenzModuloBig(a, n, m);
-					long timeEnd = System.nanoTime();
-					timetotal += (timeEnd - timeStart);
-					System.out.println("Test Iteration " + j + ": a^n mod m \n a (" + (a.bitLength() + 1) + "Bits): " + a + ", \n n (" + (n.bitLength() + 1) + "Bits): " + n + ", \n m (" + (m.bitLength() + 1) + "Bits): " + m + "\n \n= " + res + "\n \n");
-					
-				}
-				timetotal = (timetotal / testloops);
-				
-				System.out.println("Calculated potenzModuloBig(a,n,m) "
-						+ "with bitlength = " + bitlength + "\n\n"
-						+ "in " + testloops + " test loops and with " + warmuploops + " warmup loops \n\n"
-						+ "approximated CPU time:\n" 
-						+ timetotal + " nanoseconds \n"
-						+ timetotal/1000.f + " microseconds \n"
-						+ timetotal/1000000.f + " milliseconds \n"
-						+ timetotal/1000000000.f + " seconds \n");
-			}
-		});
-
-		btnPotenzModulo.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent e) {
-				if (!tfParameter1.getText().trim().isEmpty() 
-						&& !tfParameter2.getText().trim().isEmpty()
-						&& !tfParameter3.getText().trim().isEmpty()) {
-
-					BigInteger a = new BigInteger(tfParameter1.getText());
-					BigInteger n = new BigInteger(tfParameter2.getText());
-					BigInteger m = new BigInteger(tfParameter3.getText());
-
-					long startTime = System.nanoTime();
-					BigInteger res = CALCULATOR.potenzModuloBig(a, n, m);
-					long endTime = System.nanoTime();
-					long duration = endTime - startTime;
-
-					System.out.println(" ");
-					System.out.println("_________________________________________________");
-					System.out.println(" ");
-					System.out.println("a^n mod m \n a (" + (a.bitLength()) + "Bits): " + a + ", \n n (" + (n.bitLength()) + "Bits): " + n + ", \n m (" + (m.bitLength()) + "Bits): " + m + "\n \n (" + (res.bitLength()) + "Bits) = "+ res);
-					System.out.println(" ");
-					System.out.println(
-							"CPU time: \t" + (endTime - startTime) + " nanoseconds, " + ((endTime - startTime) / 1000)
-									+ " mircoseconds, " + ((endTime - startTime) / 1000000) + " milliseconds");
-					System.out.println(" ");
-					System.out.println("_________________________________________________");
-				} else {
-					System.out.println("Please insert Parameter 1 : Basis");
-					System.out.println("Please insert Parameter 2 : Modulo");
-					System.out.println("Please insert Parameter 3 : Exponent");
-
-				}
-
-			}
-		});
-
-		
-		btnPotenz.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent e) {
-				if (!tfParameter1.getText().trim().isEmpty() 
-						&& !tfParameter2.getText().trim().isEmpty()) {
-
-					BigInteger a = new BigInteger(tfParameter1.getText());
-					BigInteger n = new BigInteger(tfParameter2.getText());
-
-					long startTime = System.nanoTime();
-					BigInteger res = CALCULATOR.powBig(a, n);
-					long endTime = System.nanoTime();
-					long duration = endTime - startTime;
-
-					System.out.println(" ");
-					System.out.println("_________________________________________________");
-					System.out.println(" ");
-					System.out.println("a^n \n a (" + (a.bitLength() + 1) + "Bits): " + a + "\n n (" + (n.bitLength() + 1) + "Bits): " + n + " \n= " + res);
-					System.out.println(" ");
-					System.out.println(
-							"CPU time: \t" + (endTime - startTime) + " nanoseconds, " + ((endTime - startTime) / 1000)
-									+ " mircoseconds, " + ((endTime - startTime) / 1000000) + " milliseconds");
-					System.out.println(" ");
-					System.out.println("_________________________________________________");
-				} else {
-					System.out.println("Please insert Parameter 1 : Basis");
-					System.out.println("Please insert Parameter 2 : Exponent");
-
-				}
-
+		btnRun = new Button("Run");
+		btnRun.setMinWidth(100);
+		checkboxTest = new CheckBox("Test");
+		checkboxTest.selectedProperty().addListener(new ChangeListener<Boolean>() {
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				currentController.setTestMode(newValue);
 			}
 		});
 		
 		
-		btnAckermann.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent e) {
-				if (!tfParameter1.getText().trim().isEmpty() && !tfParameter2.getText().trim().isEmpty()) {
-					BigInteger m = new BigInteger(tfParameter1.getText());
-					BigInteger n = new BigInteger(tfParameter2.getText());
-					long startTime = System.nanoTime();
-					BigInteger res = CALCULATOR.ackermannFunc(m, n);
-					long endTime = System.nanoTime();
 
-					System.out.println(" ");
-					System.out.println("_________________________________________________");
-					System.out.println(" ");
-					System.out.println("ackermann(" + m + ", " + n + ") = " + res);
-					System.out.println(" ");
-					System.out.println(
-							"CPU time: \t" + (endTime - startTime) + " nanoseconds, " + ((endTime - startTime) / 1000)
-									+ " mircoseconds, " + ((endTime - startTime) / 1000000) + " milliseconds");
-					System.out.println(" ");
-					System.out.println("_________________________________________________");
-				} else {
-					System.out.println("Please insert Parameter 1 and 2");
-				}
-			}
-		});
+		buttonPane.getChildren().addAll(btnRun, checkboxTest);
 
-		btnPytagorasTree.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent e) {
+		
 
-				cdt.drawPytagorasTree(40, 20);
-
-			}
-
-		});
-
+		
+		
+		
+		/**
+		 * add Panes to BorderPanes and set Scene
+		 */
+		borderPane.setTop(titlePane);
+		borderPane.setLeft(methodePane);
+		borderPane.setCenter(inputPane);
+		borderPane.setRight(buttonPane);
+		borderPane.setBottom(viewPane);
+		
+		// borderPane.setMinSize(880, 500);
+		// borderPane.setMaxSize(880, 500);
+		
+		Scene scene = new Scene(borderPane);
+		primaryStage.setScene(scene);
+	    primaryStage.setResizable(false);
 		primaryStage.show();
 	}
 
+	
+	
+	//Change ComboBox
+	public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+		String[] pnames = {};
+		for (MethodeController control : controls) {
+			if(control.getTitle() == newValue){
+				currentController = control;
+				pnames = control.getParameterNames();
+				break;
+			}
+		}
+		//Set up to 4 ParamterPaneItems visible and set labels
+		for (int i = 0; i < pnames.length; i++) {
+			ppis.get(i).setVisible(true);
+			ppis.get(i).setLabel(pnames[i]);
+		}
+		for (int i = pnames.length; i < 4; i++) {
+			ppis.get(i).setVisible(false);
+			ppis.get(i).setLabel("");
+		}
+		
+		titlePaneTitle.setText(currentController.getTitle());
+		descriptionArea.setText(currentController.getDescription());
+		btnRun.setOnAction(currentController);
+		currentController.setParamterValues(0,ppi00.getValue());
+		currentController.setParamterValues(1,ppi01.getValue());
+		currentController.setParamterValues(2,ppi02.getValue());
+		currentController.setParamterValues(3,ppi03.getValue());
+		currentController.setTestMode(checkboxTest.isSelected());
+
+		
+	}
+	
 }
