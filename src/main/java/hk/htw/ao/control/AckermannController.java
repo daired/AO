@@ -11,7 +11,7 @@ public class AckermannController extends FunctionController {
 	public AckermannController() {
 		super();
 		this.title = "Ackermann Funktion";
-		this.description = "Rekursive Implementierung einer exponentiell wachsenden Ackermannfunktion.";
+		this.description = "Rekursiv\n Exponentielles Wachstum";
 		this.parameterNames = new String[]{"m", "n"};
 	}
 
@@ -29,17 +29,22 @@ public class AckermannController extends FunctionController {
 		
 		long timeEnd = System.nanoTime();	
 
-		messageRun +=  parameterNames[0] + ": "+ parameterValues[0] + "\n\n";
-		messageRun +=  parameterNames[1] + ": "+ parameterValues[1] + "\n\n";
-		//messageRun +=  parameterNames[2] + ": "+ parameterValues[2] + "\n\n";
-		//messageRun +=  parameterNames[3] + ": "+ parameterValues[3] + "\n\n";
-		messageRun += "\n = "+ function.getRes() + "\n\n";
+		if(function.getRes() != null){
+			messageRun +=  parameterNames[0] + ": "+ parameterValues[0] + "\n\n";
+			messageRun +=  parameterNames[1] + ": "+ parameterValues[1] + "\n\n";
+			//messageRun +=  parameterNames[2] + ": "+ parameterValues[2] + "\n\n";
+			//messageRun +=  parameterNames[3] + ": "+ parameterValues[3] + "\n\n";
+			messageRun += "\n = "+ function.getRes() + "\n\n";
+		}
+		else{
+			messageRun += "Stopped thread...";
+		}
 		messageRun += printTime(timeEnd - timeStart);
 		
 	}
 
 	public void startTest() {
-		messageRun += title + "\n\n";
+		messageTest+= title + "\n\n";
 
 		final long warmuploops = 0;
 		final long testloops = 1;

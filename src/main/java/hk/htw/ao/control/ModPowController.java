@@ -7,8 +7,8 @@ public class ModPowController extends FunctionController {
 
 	public ModPowController() {
 		super();
-		this.title = "modulares Potenzieren (a^n mod m)";
-		this.description = "Iterative BigInteger Implementation modulares Potenzieren (a^n mod m)\n";
+		this.title = "ModPow";
+		this.description = "a^n mod m\n BigInteger Implementierung ";
 		this.parameterNames = new String[]{"Basis", "Exponent", "Modulo"};
 	}
 
@@ -26,17 +26,22 @@ public void startRun() {
 	
 	long timeEnd = System.nanoTime();	
 
-	messageRun +=  parameterNames[0] + ": "+ parameterValues[0] + "\n\n";
-	messageRun +=  parameterNames[1] + ": "+ parameterValues[1] + "\n\n";
-	messageRun +=  parameterNames[2] + ": "+ parameterValues[2] + "\n\n";
-	//messageRun +=  parameterNames[3] + ": "+ parameterValues[3] + "\n\n";
-	messageRun += "\n = "+ function.getRes() + "\n\n";
+	if(function.getRes() != null){
+		messageRun +=  parameterNames[0] + ": "+ parameterValues[0] + "\n\n";
+		messageRun +=  parameterNames[1] + ": "+ parameterValues[1] + "\n\n";
+		messageRun +=  parameterNames[2] + ": "+ parameterValues[2] + "\n\n";
+		//messageRun +=  parameterNames[3] + ": "+ parameterValues[3] + "\n\n";
+		messageRun += "\n = "+ function.getRes() + "\n\n";
+	}
+	else{
+		messageRun += "Stopped thread...";
+	}
 	messageRun += printTime(timeEnd - timeStart);
 	
 	}
 
 	public void startTest() {
-		messageRun += title + "\n\n";
+		messageTest+= title + "\n\n";
 
 		final long warmuploops = 1;
 		final long testloops = 2;

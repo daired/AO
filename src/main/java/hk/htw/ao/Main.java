@@ -174,7 +174,7 @@ public class Main extends Application implements ChangeListener<String> {
 		TextArea ta = new TextArea();
 		ta.setMinWidth(600);
 		ta.setEditable(false);
-		//ta.setWrapText(true);
+		ta.setWrapText(true);
 		Console console = new Console(ta);
 		PrintStream ps = new PrintStream(console, true);
 		System.setOut(ps);

@@ -12,8 +12,8 @@ public class FibIterativController extends FunctionController {
 
 	public FibIterativController() {
 		super();
-		this.title = "Fibbonacci Folge - Iterativ";
-		this.description = "Iterative Implementierung zur berechnung der n-ten Fibbonaccizahl.";
+		this.title = "Fibbonacci - Iterativ";
+		this.description = "Berechnung der n-ten Fibbonaccizahl";
 		this.parameterNames = new String[]{"n"};
 	}
 
@@ -25,21 +25,28 @@ public class FibIterativController extends FunctionController {
 		long timeStart = System.nanoTime();
 		//Start function call in new Thread
 		try { function.runThread(function.getCalculator());
-		} catch (InterruptedException e) {}
+		} catch (InterruptedException e) { }
 		
 		long timeEnd = System.nanoTime();	
 
-		messageRun +=  parameterNames[0] + ": "+ parameterValues[0] + "\n\n";
-		//messageRun +=  parameterNames[1] + ": "+ parameterValues[1] + "\n\n";
-		//messageRun +=  parameterNames[2] + ": "+ parameterValues[2] + "\n\n";
-		//messageRun +=  parameterNames[3] + ": "+ parameterValues[3] + "\n\n";
-		messageRun += "\n = "+ function.getRes() + "\n\n";
+		if(function.getRes() != null){
+			messageRun +=  parameterNames[0] + ": "+ parameterValues[0] + "\n\n";
+			//messageRun +=  parameterNames[1] + ": "+ parameterValues[1] + "\n\n";
+			//messageRun +=  parameterNames[2] + ": "+ parameterValues[2] + "\n\n";
+			//messageRun +=  parameterNames[3] + ": "+ parameterValues[3] + "\n\n";
+			messageRun += "\n = "+ function.getRes() + "\n\n";
+		}
+		else{
+			messageRun += "Stopped thread...";
+		}
 		messageRun += printTime(timeEnd - timeStart);
+
+
 		
 	}
 
 	public void startTest() {
-		messageRun += title + "\n\n";
+		messageTest+= title + "\n\n";
 
 		final long warmuploops = 0;
 		final long testloops = 1;

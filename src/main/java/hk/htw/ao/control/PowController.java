@@ -9,9 +9,9 @@ public class PowController extends FunctionController {
 
 	public PowController() {
 		super();
-		this.title = "a^n";
-		this.description = "BigInteger Implementierung Potenzieren (a^n)\n";
-		this.parameterNames = new String[]{"a", "n"};
+		this.title = "Pow";
+		this.description = "Potenzieren a^n\nBigInteger Implementierung ";
+		this.parameterNames = new String[]{"Basis", "Exponent"};
 	}
 
 public void startRun() {
@@ -28,17 +28,22 @@ messageRun += title + "\n\n";
 	
 	long timeEnd = System.nanoTime();	
 
-	messageRun +=  parameterNames[0] + ": "+ parameterValues[0] + "\n\n";
-	messageRun +=  parameterNames[1] + ": "+ parameterValues[1] + "\n\n";
-	//messageRun +=  parameterNames[2] + ": "+ parameterValues[2] + "\n\n";
-	//messageRun +=  parameterNames[3] + ": "+ parameterValues[3] + "\n\n";
-	messageRun += "\n = "+ function.getRes() + "\n\n";
+	if(function.getRes() != null){
+		messageRun +=  parameterNames[0] + ": "+ parameterValues[0] + "\n\n";
+		messageRun +=  parameterNames[1] + ": "+ parameterValues[1] + "\n\n";
+		//messageRun +=  parameterNames[2] + ": "+ parameterValues[2] + "\n\n";
+		//messageRun +=  parameterNames[3] + ": "+ parameterValues[3] + "\n\n";
+		messageRun += "\n = "+ function.getRes() + "\n\n";
+	}
+	else{
+		messageRun += "Stopped thread...";
+	}
 	messageRun += printTime(timeEnd - timeStart);
 	
 	}
 
 	public void startTest() {
-		messageRun += title + "\n\n";
+		messageTest+= title + "\n\n";
 
 		final long warmuploops = 0;
 		final long testloops = 1;

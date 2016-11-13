@@ -10,7 +10,7 @@ public class GCDExtendedController extends FunctionController {
 
 	public GCDExtendedController() {
 		super();
-		this.title = "Extended GDC";
+		this.title = "GDC Extended";
 		this.description = "Description Text is here for the extended gdc( a,b ) algorithm.";
 		this.parameterNames = new String[]{"a", "b"};
 	}
@@ -30,17 +30,23 @@ public void startRun() {
 		
 		long timeEnd = System.nanoTime();	
 
-		messageRun +=  parameterNames[0] + ": "+ parameterValues[0] + "\n\n";
-		messageRun +=  parameterNames[1] + ": "+ parameterValues[1] + "\n\n";
-		//messageRun +=  parameterNames[2] + ": "+ parameterValues[2] + "\n\n";
-		//messageRun +=  parameterNames[3] + ": "+ parameterValues[3] + "\n\n";
-		messageRun += "\n = "+ Arrays.toString(function.getRes()) + "\n\n";
+		if(function.getRes() != null){
+			messageRun +=  parameterNames[0] + ": "+ parameterValues[0] + "\n\n";
+			messageRun +=  parameterNames[1] + ": "+ parameterValues[1] + "\n\n";
+			//messageRun +=  parameterNames[2] + ": "+ parameterValues[2] + "\n\n";
+			//messageRun +=  parameterNames[3] + ": "+ parameterValues[3] + "\n\n";
+			messageRun += "\n = "+ Arrays.toString(function.getRes()) + "\n\n";
+		}
+		else{
+			messageRun += "Stopped thread...";
+		}
 		messageRun += printTime(timeEnd - timeStart);
+
 		
 	}
 
 	public void startTest() {
-		messageRun += title + "\n\n";
+		messageTest+= title + "\n\n";
 
 		final long warmuploops = 0;
 		final long testloops = 1;

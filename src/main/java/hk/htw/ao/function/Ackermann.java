@@ -2,15 +2,15 @@ package hk.htw.ao.function;
 
 import java.math.BigInteger;
 
-import hk.htw.ao.function.abs.AbstractFunction;
+import hk.htw.ao.function.abs.FunctionThread;
 
-public class Ackermann extends AbstractFunction {
+public class Ackermann extends FunctionThread {
 
 	private BigInteger res;
 
 	public Ackermann(String[] values) {
 		super(values);
-		this.calculator = new Calculator() {
+		this.calculation = new Calculation() {
 
 			protected Object call() throws Exception {
 				BigInteger m = new BigInteger(parameter[0]);

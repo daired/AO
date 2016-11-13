@@ -8,7 +8,6 @@ import javafx.event.ActionEvent;
 public abstract class FunctionController implements FunctionEventHandler {
 
 	protected final static String MESSAGEBREAK = "___________________________________\n\n";
-	protected final static long THREADTIMEOUT = 1000 * 60 * 60;
 	
 	protected final OptimizedCalculator CALCULATOR = OptimizedCalculator.getInstance();
 	protected final OptimizedSorter SORTER = OptimizedSorter.getInstance();
@@ -46,7 +45,7 @@ public abstract class FunctionController implements FunctionEventHandler {
 	}
 
 	public String printTime(long nanoTime) {
-		return "approximated CPU time:\n\n" + nanoTime + " nanoseconds \n" + nanoTime / 1000.f + " microseconds \n"
+		return "\nCPU time:\n\n" + nanoTime + " nanoseconds \n" + nanoTime / 1000.f + " microseconds \n"
 				+ nanoTime / 1000000.f + " milliseconds \n" + nanoTime / 1000000000.f + " seconds \n";
 	}
 

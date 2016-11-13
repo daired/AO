@@ -2,19 +2,19 @@ package hk.htw.ao.function;
 
 import java.math.BigInteger;
 
-import hk.htw.ao.function.abs.AbstractFunction;
+import hk.htw.ao.function.abs.FunctionThread;
 
-public class FibIterativ extends AbstractFunction {
+public class FibIterativ extends FunctionThread {
 
 	private BigInteger res;
 
 	public FibIterativ(String[] values) {
 		super(values);
-		this.calculator = new Calculator() {
+		this.calculation = new Calculation() {
 
 			protected Object call() throws Exception{
 				BigInteger n = new BigInteger(parameter[0]);
-				return res = fibIterativ(n);			
+				return res = fibIterativ(n);
 		    }
 		};
 	}

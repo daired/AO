@@ -2,15 +2,15 @@ package hk.htw.ao.function;
 
 import java.math.BigInteger;
 
-import hk.htw.ao.function.abs.AbstractFunction;
+import hk.htw.ao.function.abs.FunctionThread;
 
-public class Pow extends AbstractFunction {
+public class Pow extends FunctionThread {
 
 	private BigInteger res;
 
 	public Pow(String[] values) {
 		super(values);
-		this.calculator = new Calculator() {
+		this.calculation = new Calculation() {
 
 			protected Object call() throws Exception {
 				BigInteger a = new BigInteger(parameter[0]);
