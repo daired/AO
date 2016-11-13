@@ -12,7 +12,7 @@ import hk.htw.ao.control.GCDIterativController;
 import hk.htw.ao.control.GCDRekursivController;
 import hk.htw.ao.control.ModPowController;
 import hk.htw.ao.control.PowController;
-import hk.htw.ao.control.abs.MethodeController;
+import hk.htw.ao.control.abs.FunctionController;
 import hk.htw.ao.gui.Console;
 import hk.htw.ao.gui.ParameterPaneItem;
 import hk.htw.ao.util.CanvasDrawingTool;
@@ -41,10 +41,10 @@ import javafx.stage.Stage;
 public class Main extends Application implements ChangeListener<String> {
 
 
-	private List<MethodeController> controls = new ArrayList<MethodeController>();
+	private List<FunctionController> controls = new ArrayList<FunctionController>();
 	private List<ParameterPaneItem> ppis = new ArrayList<ParameterPaneItem>();
 
-	private MethodeController currentController;
+	private FunctionController currentController;
 	private CanvasDrawingTool cdt;
 	
 	private Text titlePaneTitle;
@@ -56,20 +56,15 @@ public class Main extends Application implements ChangeListener<String> {
 	private ParameterPaneItem ppi02 = new ParameterPaneItem();
 	private ParameterPaneItem ppi03 = new ParameterPaneItem();
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception  {
 
 		launch(args);
 	}
 
 	@Override
-	public void start(Stage primaryStage) {
+	public void start(Stage primaryStage){
 		
-
-		
-		primaryStage.setTitle("M10 Algorithms & Optimization");
-		BorderPane borderPane = new BorderPane();
-		borderPane.setPadding(new Insets(10, 10, 10, 10));
-		
+		//INIT CONTROLLER
 		controls.add(new ModPowController());
 		controls.add(new PowController());
 		controls.add(new GCDExtendedController());
@@ -78,7 +73,11 @@ public class Main extends Application implements ChangeListener<String> {
 		controls.add(new AckermannController());	
 		controls.add(new FibRekursivController());	
 		controls.add(new FibIterativController());	
-
+		
+		
+		primaryStage.setTitle("M10 Algorithms & Optimization");
+		BorderPane borderPane = new BorderPane();
+		borderPane.setPadding(new Insets(10, 10, 10, 10));
 		
 		/**
 		 * MethodePane
@@ -89,22 +88,21 @@ public class Main extends Application implements ChangeListener<String> {
 		
 
 		ComboBox<String> methodeComboBox = new ComboBox<String>();
-		methodeComboBox.setMinWidth(300);
-		methodeComboBox.setMaxWidth(300);
-		for(MethodeController control : controls)
+		methodeComboBox.setMinWidth(250);
+		methodeComboBox.setMaxWidth(250);
+		for(FunctionController control : controls)
 			methodeComboBox.getItems().add(control.getTitle());
 		// Add this as changeListener --> methode changed(...)
 		methodeComboBox.valueProperty().addListener(this);
 		methodeComboBox.setPromptText("Please choose a methode");
 		
 		descriptionArea = new TextArea();
-		descriptionArea.setMinWidth(300);
-		descriptionArea.setMaxWidth(300);
+		descriptionArea.setMinWidth(250);
+		descriptionArea.setMaxWidth(250);
 		descriptionArea.setMinHeight(100);
 		descriptionArea.setMaxHeight(100);
 		descriptionArea.setBackground(Background.EMPTY);
-		descriptionArea.setStyle("-fx-control-inner-background: #F4F4F4");
-
+		descriptionArea.setStyle("-fx-control-inner-background: #F4F4F4;");
 		descriptionArea.setEditable(false);
 		descriptionArea.setFocusTraversable(false);
 		descriptionArea.setWrapText(true);
@@ -176,7 +174,7 @@ public class Main extends Application implements ChangeListener<String> {
 		TextArea ta = new TextArea();
 		ta.setMinWidth(600);
 		ta.setEditable(false);
-		ta.setWrapText(true);
+		//ta.setWrapText(true);
 		Console console = new Console(ta);
 		PrintStream ps = new PrintStream(console, true);
 		System.setOut(ps);
@@ -213,9 +211,6 @@ public class Main extends Application implements ChangeListener<String> {
 				currentController.setTestMode(newValue);
 			}
 		});
-		
-		
-
 		buttonPane.getChildren().addAll(btnRun, checkboxTest);
 
 		
@@ -237,6 +232,7 @@ public class Main extends Application implements ChangeListener<String> {
 		
 		Scene scene = new Scene(borderPane);
 		primaryStage.setScene(scene);
+		scene.getStylesheets().add(Main.class.getResource("gui/css/main.css").toExternalForm());
 	    primaryStage.setResizable(false);
 		primaryStage.show();
 	}
@@ -246,7 +242,7 @@ public class Main extends Application implements ChangeListener<String> {
 	//Change ComboBox
 	public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 		String[] pnames = {};
-		for (MethodeController control : controls) {
+		for (FunctionController control : controls) {
 			if(control.getTitle() == newValue){
 				currentController = control;
 				pnames = control.getParameterNames();

@@ -1,36 +1,38 @@
 package hk.htw.ao.control;
 
-import java.math.BigInteger;
-import java.util.Arrays;
+import hk.htw.ao.control.abs.FunctionController;
+import hk.htw.ao.function.ModPow;
 
-import hk.htw.ao.control.abs.MethodeController;
-
-public class ModPowController extends MethodeController {
+public class ModPowController extends FunctionController {
 
 	public ModPowController() {
 		super();
 		this.title = "modulares Potenzieren (a^n mod m)";
 		this.description = "Iterative BigInteger Implementation modulares Potenzieren (a^n mod m)\n";
-		this.parameterNames = new String[]{"a", "n", "m"};
+		this.parameterNames = new String[]{"Basis", "Exponent", "Modulo"};
 	}
 
 public void startRun() {
-		messageRun += title + "\n\n";
+	messageRun += title + "\n\n";
 	
-		BigInteger a = new BigInteger(parameterValues[0]);
-		BigInteger n = new BigInteger(parameterValues[1]);
-		BigInteger m = new BigInteger(parameterValues[2]);
-		
-		long timeStart = System.nanoTime();
-		BigInteger res = CALCULATOR.potenzModuloBig(a,n,m);
-		long timeEnd = System.nanoTime();	
+	// init function class 
+	ModPow function = new ModPow(parameterValues);
+	
+	long timeStart = System.nanoTime();
+	
+	//Start function call in new Thread
+	try { function.runThread(function.getCalculator());
+	} catch (InterruptedException e) {	}
+	
+	long timeEnd = System.nanoTime();	
 
-		messageRun += "a (" + (a.bitLength() + 1) + " Bits): " 		+ a + "\n\n";
-		messageRun += "n (" + (n.bitLength() + 1) + " Bits): " 		+ n + "\n\n";
-		messageRun += "m (" + (m.bitLength() + 1) + " Bits): " 		+ m + "\n\n";
-		messageRun += "  (" + (res.bitLength() + 1) + " Bits) = " 	+ res + "\n\n";
-		messageRun += printTime(timeEnd - timeStart);
-		
+	messageRun +=  parameterNames[0] + ": "+ parameterValues[0] + "\n\n";
+	messageRun +=  parameterNames[1] + ": "+ parameterValues[1] + "\n\n";
+	messageRun +=  parameterNames[2] + ": "+ parameterValues[2] + "\n\n";
+	//messageRun +=  parameterNames[3] + ": "+ parameterValues[3] + "\n\n";
+	messageRun += "\n = "+ function.getRes() + "\n\n";
+	messageRun += printTime(timeEnd - timeStart);
+	
 	}
 
 	public void startTest() {
@@ -43,30 +45,44 @@ public void startRun() {
 				
 		//Warmup Phase
 		for(int i=0;i<warmuploops;i++){
-			BigInteger a = RANDOM.generatePositiveRandomByBitLength(bitlength);
-			BigInteger n = RANDOM.generatePositiveRandomByBitLength(bitlength);
-			BigInteger m = RANDOM.generatePositiveRandomByBitLength(bitlength);
-			BigInteger res = CALCULATOR.potenzModuloBig(a, n, m);
+			parameterValues[0] = RANDOM.generatePositiveRandomByBitLength(bitlength).toString();
+			parameterValues[1] = RANDOM.generatePositiveRandomByBitLength(bitlength).toString();
+			parameterValues[2] = RANDOM.generatePositiveRandomByBitLength(bitlength).toString();
+
+			// init function class 
+			ModPow function = new ModPow(parameterValues);
+						
+			//Start function call in new Thread
+			try { function.runThread(function.getCalculator());
+			} catch (InterruptedException e) {	}
+			
 
 		}
 		
 		//Test Phase
 		for(int i=0;i<testloops;i++){
-			BigInteger a = RANDOM.generatePositiveRandomByBitLength(bitlength);
-			BigInteger n = RANDOM.generatePositiveRandomByBitLength(bitlength);
-			BigInteger m = RANDOM.generatePositiveRandomByBitLength(bitlength);
-
+			parameterValues[0] = RANDOM.generatePositiveRandomByBitLength(bitlength).toString();
+			parameterValues[1] = RANDOM.generatePositiveRandomByBitLength(bitlength).toString();
+			parameterValues[2] = RANDOM.generatePositiveRandomByBitLength(bitlength).toString();
+			// init function class 
+			ModPow function = new ModPow(parameterValues);
+			
 			long timeStart = System.nanoTime();
-			BigInteger res = CALCULATOR.potenzModuloBig(a, n, m);
-			long timeEnd = System.nanoTime();
+			
+			//Start function call in new Thread
+			try { function.runThread(function.getCalculator());
+			} catch (InterruptedException e) {	}
+			
+			long timeEnd = System.nanoTime();	
 			timetotal += (timeEnd - timeStart);
 
-			messageTest += "Test Iteration " + i + "\n\n";
-			messageTest += "a (" + (a.bitLength() + 1) + " Bits): " 		+ a + "\n\n";
-			messageTest += "n (" + (n.bitLength() + 1) + " Bits): " 		+ n + "\n\n";
-			messageTest += "m (" + (m.bitLength() + 1) + " Bits): " 		+ m + "\n\n";
-			messageTest += "  (" + (res.bitLength() + 1) + " Bits) = " 	+ res + "\n\n";
-			
+			messageTest +=  parameterNames[0] + ": "+ parameterValues[0] + "\n\n";
+			messageTest +=  parameterNames[1] + ": "+ parameterValues[1] + "\n\n";
+			messageTest +=  parameterNames[2] + ": "+ parameterValues[2] + "\n\n";
+			//messageTest +=  parameterNames[3] + ": "+ parameterValues[3] + "\n\n";
+			messageTest += "\n = "+ function.getRes() + "\n\n";
+			messageTest += MESSAGEBREAK;
+				
 		}
 		timetotal = (timetotal / testloops);
 

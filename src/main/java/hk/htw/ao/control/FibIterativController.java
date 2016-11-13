@@ -3,9 +3,11 @@ package hk.htw.ao.control;
 import java.math.BigInteger;
 import java.util.Arrays;
 
-import hk.htw.ao.control.abs.MethodeController;
+import hk.htw.ao.control.abs.FunctionController;
+import hk.htw.ao.function.FibIterativ;
+import hk.htw.ao.function.GCDExtended;
 
-public class FibIterativController extends MethodeController {
+public class FibIterativController extends FunctionController {
 
 
 	public FibIterativController() {
@@ -18,14 +20,20 @@ public class FibIterativController extends MethodeController {
 	public void startRun() {
 		messageRun += title + "\n\n";
 		
-		BigInteger n = new BigInteger(parameterValues[0]);
+		FibIterativ function = new FibIterativ(parameterValues);
 		
 		long timeStart = System.nanoTime();
-		BigInteger res = CALCULATOR.fibIterativ(n);
+		//Start function call in new Thread
+		try { function.runThread(function.getCalculator());
+		} catch (InterruptedException e) {}
+		
 		long timeEnd = System.nanoTime();	
 
-		messageRun += "n (" + (n.bitLength() + 1) + " Bits): " 		+ n + "\n\n";
-		messageRun += "  (" + (res.bitLength() + 1) + " Bits) = " 	+ res + "\n\n";
+		messageRun +=  parameterNames[0] + ": "+ parameterValues[0] + "\n\n";
+		//messageRun +=  parameterNames[1] + ": "+ parameterValues[1] + "\n\n";
+		//messageRun +=  parameterNames[2] + ": "+ parameterValues[2] + "\n\n";
+		//messageRun +=  parameterNames[3] + ": "+ parameterValues[3] + "\n\n";
+		messageRun += "\n = "+ function.getRes() + "\n\n";
 		messageRun += printTime(timeEnd - timeStart);
 		
 	}

@@ -3,9 +3,10 @@ package hk.htw.ao.control;
 import java.math.BigInteger;
 import java.util.Arrays;
 
-import hk.htw.ao.control.abs.MethodeController;
+import hk.htw.ao.control.abs.FunctionController;
+import hk.htw.ao.function.GCDExtended;
 
-public class GCDExtendedController extends MethodeController {
+public class GCDExtendedController extends FunctionController {
 
 	public GCDExtendedController() {
 		super();
@@ -15,18 +16,25 @@ public class GCDExtendedController extends MethodeController {
 	}
 
 public void startRun() {
+
+	
 		messageRun += title + "\n\n";
 	
-		BigInteger a = new BigInteger(parameterValues[0]);
-		BigInteger b = new BigInteger(parameterValues[1]);
+		GCDExtended function = new GCDExtended(parameterValues);
 		
 		long timeStart = System.nanoTime();
-		BigInteger[] res = CALCULATOR.extendedGCD(a,b);
+		
+		//Start function call in new Thread
+		try { function.runThread(function.getCalculator());
+		} catch (InterruptedException e) {}
+		
 		long timeEnd = System.nanoTime();	
 
-		messageRun += "a (" + (a.bitLength() + 1) + " Bits): "+ a + "\n";
-		messageRun += "b (" + (b.bitLength() + 1) + " Bits): "+ b + "\n";
-		messageRun += "\n = "+ Arrays.toString(res) + "\n\n";
+		messageRun +=  parameterNames[0] + ": "+ parameterValues[0] + "\n\n";
+		messageRun +=  parameterNames[1] + ": "+ parameterValues[1] + "\n\n";
+		//messageRun +=  parameterNames[2] + ": "+ parameterValues[2] + "\n\n";
+		//messageRun +=  parameterNames[3] + ": "+ parameterValues[3] + "\n\n";
+		messageRun += "\n = "+ Arrays.toString(function.getRes()) + "\n\n";
 		messageRun += printTime(timeEnd - timeStart);
 		
 	}

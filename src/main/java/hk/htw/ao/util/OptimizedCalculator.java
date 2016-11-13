@@ -218,6 +218,9 @@ public class OptimizedCalculator {
 	}
 
 	/**
+	 * 
+	 * INGUI
+	 * 
 	 * extended GCD
 	 */
 	public BigInteger[] extendedGCD(BigInteger a, BigInteger b) {
@@ -260,6 +263,13 @@ public class OptimizedCalculator {
 
 	}
 
+	/**
+	 * INGUI
+	 * 
+	 * RabinMiller
+	 * @param n
+	 * @return
+	 */
 	public boolean rabinMiller(BigInteger n){
 		
 		if(n.compareTo(new BigInteger("3")) >= 0 

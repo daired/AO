@@ -1,34 +1,40 @@
 package hk.htw.ao.control;
 
 import java.math.BigInteger;
-import java.util.Arrays;
 
-import hk.htw.ao.control.abs.MethodeController;
+import hk.htw.ao.control.abs.FunctionController;
+import hk.htw.ao.function.Pow;
 
-public class PowController extends MethodeController {
+public class PowController extends FunctionController {
 
 	public PowController() {
 		super();
-		this.title = " Potenzieren - a^n";
+		this.title = "a^n";
 		this.description = "BigInteger Implementierung Potenzieren (a^n)\n";
 		this.parameterNames = new String[]{"a", "n"};
 	}
 
 public void startRun() {
-		messageRun += title + "\n\n";
+messageRun += title + "\n\n";
 	
-		BigInteger a = new BigInteger(parameterValues[0]);
-		BigInteger n = new BigInteger(parameterValues[1]);
-		
-		long timeStart = System.nanoTime();
-		BigInteger res = CALCULATOR.powBig(a,n);
-		long timeEnd = System.nanoTime();	
+	// init function class 
+	Pow function = new Pow(parameterValues);
+	
+	long timeStart = System.nanoTime();
+	
+	//Start function call in new Thread
+	try { function.runThread(function.getCalculator());
+	} catch (InterruptedException e) {	}
+	
+	long timeEnd = System.nanoTime();	
 
-		messageRun += "a (" + (a.bitLength() + 1) + " Bits): " 		+ a + "\n\n";
-		messageRun += "n (" + (n.bitLength() + 1) + " Bits): " 		+ n + "\n\n";
-		messageRun += "  (" + (res.bitLength() + 1) + " Bits) = " 	+ res + "\n\n";
-		messageRun += printTime(timeEnd - timeStart);
-		
+	messageRun +=  parameterNames[0] + ": "+ parameterValues[0] + "\n\n";
+	messageRun +=  parameterNames[1] + ": "+ parameterValues[1] + "\n\n";
+	//messageRun +=  parameterNames[2] + ": "+ parameterValues[2] + "\n\n";
+	//messageRun +=  parameterNames[3] + ": "+ parameterValues[3] + "\n\n";
+	messageRun += "\n = "+ function.getRes() + "\n\n";
+	messageRun += printTime(timeEnd - timeStart);
+	
 	}
 
 	public void startTest() {

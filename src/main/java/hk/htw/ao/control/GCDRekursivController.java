@@ -1,11 +1,11 @@
 package hk.htw.ao.control;
 
 import java.math.BigInteger;
-import java.util.Arrays;
 
-import hk.htw.ao.control.abs.MethodeController;
+import hk.htw.ao.control.abs.FunctionController;
+import hk.htw.ao.function.GCDRekursiv;
 
-public class GCDRekursivController extends MethodeController {
+public class GCDRekursivController extends FunctionController {
 
 
 	public GCDRekursivController() {
@@ -18,19 +18,25 @@ public class GCDRekursivController extends MethodeController {
 	public void startRun() {
 		messageRun += title + "\n\n";
 		
-		BigInteger a = new BigInteger(parameterValues[0]);
-		BigInteger b = new BigInteger(parameterValues[1]);
+		// init function class 
+		GCDRekursiv function = new GCDRekursiv(parameterValues);
 		
 		long timeStart = System.nanoTime();
-		BigInteger res = CALCULATOR.gcdRekursiv(a,b);
+		
+		//Start function call in new Thread
+		try { function.runThread(function.getCalculator());
+		} catch (InterruptedException e) {	}
+		
 		long timeEnd = System.nanoTime();	
 
-		messageRun += "a (" + (a.bitLength() + 1) + " Bits): " 		+ a + "\n";
-		messageRun += "b (" + (b.bitLength() + 1) + " Bits): " 		+ b + "\n\n";
-		messageRun += "  (" + (res.bitLength() + 1) + " Bits) = " 	+ res + "\n\n";
+		messageRun +=  parameterNames[0] + ": "+ parameterValues[0] + "\n\n";
+		messageRun +=  parameterNames[1] + ": "+ parameterValues[1] + "\n\n";
+		//messageRun +=  parameterNames[2] + ": "+ parameterValues[2] + "\n\n";
+		//messageRun +=  parameterNames[3] + ": "+ parameterValues[3] + "\n\n";
+		messageRun += "\n = "+ function.getRes() + "\n\n";
 		messageRun += printTime(timeEnd - timeStart);
-		
-	}
+			}
+
 
 	public void startTest() {
 		messageRun += title + "\n\n";
