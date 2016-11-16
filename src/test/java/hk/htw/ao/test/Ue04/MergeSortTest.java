@@ -1,4 +1,4 @@
-package hk.htw.ao.test;
+package hk.htw.ao.test.Ue04;
 
 import static org.junit.Assert.*;
 

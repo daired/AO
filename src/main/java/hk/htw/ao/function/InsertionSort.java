@@ -5,12 +5,12 @@ import java.math.BigInteger;
 import hk.htw.ao.function.abs.FunctionThread;
 import hk.htw.ao.util.OptimizedRandom;
 
-public class MergeSort extends FunctionThread {
+public class InsertionSort extends FunctionThread {
 
 	protected final OptimizedRandom RANDOM = OptimizedRandom.getInstance();
 	private BigInteger[] res;
 
-	public MergeSort(String[] values) {
+	public InsertionSort(String[] values) {
 		super(values);
 		this.functiontask = new FunctionTask() {
 
@@ -34,7 +34,7 @@ public class MergeSort extends FunctionThread {
 	/**
 	 * AO - Aufgabe 4
 	 * 
-	 * MergeSort implementation Rekursiv
+	 * InsertionSort implementation
 	 * 
 	 * bigInt[] --> bigInt[]
 	 */

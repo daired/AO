@@ -1,4 +1,4 @@
-package hk.htw.ao.util;
+package hk.htw.ao.examples;
 
 import java.util.Arrays;
 import java.util.Random;
