@@ -10,8 +10,10 @@ public class FibIterativ extends FunctionThread {
 
 	public FibIterativ(String[] values) {
 		super(values);
-		this.calculation = new Calculation() {
+		this.functiontask = new FunctionTask() {
 
+			// Triggered by this.runThread() - defined in abstract FunctionThread
+			// Input values, call function(s) and set result
 			protected Object call() throws Exception{
 				BigInteger n = new BigInteger(parameter[0]);
 				return res = fibIterativ(n);
@@ -27,7 +29,7 @@ public class FibIterativ extends FunctionThread {
 	/**
 	 * 
 	 */
-	public BigInteger fibIterativ(BigInteger n) {
+	public static BigInteger fibIterativ(BigInteger n) {
 		if (n.equals(BigInteger.ZERO))
 			return BigInteger.ZERO;
 		BigInteger a, b, h;

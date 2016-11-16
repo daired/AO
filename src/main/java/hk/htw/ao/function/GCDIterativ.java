@@ -10,8 +10,10 @@ public class GCDIterativ extends FunctionThread {
 
 	public GCDIterativ(String[] values) {
 		super(values);
-		this.calculation = new Calculation() {
+		this.functiontask = new FunctionTask() {
 
+			// Triggered by this.runThread() - defined in abstract FunctionThread
+			// Input values, call function(s) and set result
 			protected Object call() throws Exception {
 				BigInteger a = new BigInteger(parameter[0]);
 				BigInteger b = new BigInteger(parameter[1]);
@@ -28,7 +30,7 @@ public class GCDIterativ extends FunctionThread {
 	/**
 	 * 
 	 */
-	private BigInteger gcdIterativ(BigInteger a, BigInteger b) {
+	public static BigInteger gcdIterativ(BigInteger a, BigInteger b) {
 		while (!b.equals(BigInteger.ZERO)) {
 			BigInteger tmp = b;
 			b = a.mod(b);

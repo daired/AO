@@ -21,7 +21,7 @@ public void startRun() {
 	long timeStart = System.nanoTime();
 	
 	//Start function call in new Thread
-	try { function.runThread(function.getCalculator());
+	try { function.runThread(function.getFunctionTask());
 	} catch (InterruptedException e) {	}
 	
 	long timeEnd = System.nanoTime();	
@@ -58,7 +58,7 @@ public void startRun() {
 			ModPow function = new ModPow(parameterValues);
 						
 			//Start function call in new Thread
-			try { function.runThread(function.getCalculator());
+			try { function.runThread(function.getFunctionTask());
 			} catch (InterruptedException e) {	}
 			
 
@@ -75,7 +75,7 @@ public void startRun() {
 			long timeStart = System.nanoTime();
 			
 			//Start function call in new Thread
-			try { function.runThread(function.getCalculator());
+			try { function.runThread(function.getFunctionTask());
 			} catch (InterruptedException e) {	}
 			
 			long timeEnd = System.nanoTime();	

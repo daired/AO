@@ -1,19 +1,18 @@
 package hk.htw.ao.control.abs;
 
-import hk.htw.ao.util.OptimizedCalculator;
+import hk.htw.ao.function.abs.FunctionThread;
 import hk.htw.ao.util.OptimizedRandom;
-import hk.htw.ao.util.OptimizedSorter;
 import javafx.event.ActionEvent;
 
 public abstract class FunctionController implements FunctionEventHandler {
 
 	protected final static String MESSAGEBREAK = "___________________________________\n\n";
 	
-	protected final OptimizedCalculator CALCULATOR = OptimizedCalculator.getInstance();
-	protected final OptimizedSorter SORTER = OptimizedSorter.getInstance();
 	protected final OptimizedRandom RANDOM = OptimizedRandom.getInstance();
+	
 	protected String title;
 	protected String description;
+	protected FunctionThread currentFunctionThread;
 
 	protected String[] parameterNames;
 
@@ -44,7 +43,7 @@ public abstract class FunctionController implements FunctionEventHandler {
 
 	}
 
-	public String printTime(long nanoTime) {
+	public static String printTime(long nanoTime) {
 		return "\nCPU time:\n\n" + nanoTime + " nanoseconds \n" + nanoTime / 1000.f + " microseconds \n"
 				+ nanoTime / 1000000.f + " milliseconds \n" + nanoTime / 1000000000.f + " seconds \n";
 	}
@@ -60,7 +59,7 @@ public abstract class FunctionController implements FunctionEventHandler {
 	public String[] getParameterNames() {
 		return parameterNames;
 	}
-
+	
 	public void consoleOutRun() {
 		System.out.println(messageRun);
 		messageRun = MESSAGEBREAK;
@@ -78,5 +77,10 @@ public abstract class FunctionController implements FunctionEventHandler {
 	public void setTestMode(boolean testMode) {
 		this.testMode = testMode;
 	}
+	
+	public FunctionThread getCurrentFunctionThread(){
+		return this.currentFunctionThread;
+	}
+	
 
 }

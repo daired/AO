@@ -37,12 +37,13 @@ public class OptimizedRandom {
 	}
 	
 	public BigInteger[] generateRandomUnsortedList(int bitlength, int Listlength){
-		SecureRandom random = new SecureRandom();
-	    byte bytes[] = bitlength < 8 ?  new byte[1] : new byte[bitlength/8];
 	    BigInteger[] list = new BigInteger[Listlength];
-	    random.nextBytes(bytes);
-	     for (int i = 0; i < Listlength; i++)
-	    	 list[i] = new BigInteger(bytes);
+		SecureRandom random = new SecureRandom();
+		  for (int i = 0; i < Listlength; i++){
+			byte bytes[] = bitlength < 8 ?  new byte[1] : new byte[bitlength/8];
+			random.nextBytes(bytes);
+			list[i] = new BigInteger(bytes).abs();
+		  }
 	     return list;
 	}
 

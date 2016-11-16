@@ -1,11 +1,9 @@
 package hk.htw.ao.control;
 
 import java.math.BigInteger;
-import java.util.Arrays;
 
 import hk.htw.ao.control.abs.FunctionController;
 import hk.htw.ao.function.FibIterativ;
-import hk.htw.ao.function.GCDExtended;
 
 public class FibIterativController extends FunctionController {
 
@@ -24,7 +22,7 @@ public class FibIterativController extends FunctionController {
 		
 		long timeStart = System.nanoTime();
 		//Start function call in new Thread
-		try { function.runThread(function.getCalculator());
+		try { function.runThread(function.getFunctionTask());
 		} catch (InterruptedException e) { }
 		
 		long timeEnd = System.nanoTime();	

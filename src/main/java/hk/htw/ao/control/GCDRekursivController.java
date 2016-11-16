@@ -24,7 +24,7 @@ public class GCDRekursivController extends FunctionController {
 		long timeStart = System.nanoTime();
 		
 		//Start function call in new Thread
-		try { function.runThread(function.getCalculator());
+		try { function.runThread(function.getFunctionTask());
 		} catch (InterruptedException e) {	}
 		
 		long timeEnd = System.nanoTime();	

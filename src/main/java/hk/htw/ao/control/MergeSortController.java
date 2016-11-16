@@ -4,29 +4,32 @@ import java.math.BigInteger;
 import java.util.Arrays;
 
 import hk.htw.ao.control.abs.FunctionController;
-import hk.htw.ao.function.GCDExtended;
+import hk.htw.ao.function.MergeSort;
 
-public class GCDExtendedController extends FunctionController {
+public class MergeSortController extends FunctionController {
 
-	public GCDExtendedController() {
+
+	public MergeSortController() {
 		super();
-		this.title = "GDC Extended";
-		this.description = "Description Text is here for the extended gdc( a,b ) algorithm.";
-		this.parameterNames = new String[]{"a", "b"};
+		this.title = "MergeSort";
+		this.description = "Rekursiv\n Exponentielles Wachstum";
+		this.parameterNames = new String[]{"Arraylength", "Bitlength"};
 	}
 
-public void startRun() {
-
-	
+	public void startRun() {
 		messageRun += title + "\n\n";
-	
-		GCDExtended function = new GCDExtended(parameterValues);
+		
+		//Change FUNCTION CLASS here
+		MergeSort function = new MergeSort(parameterValues);
 		
 		long timeStart = System.nanoTime();
 		
-		//Start function call in new Thread
+		//Start function call in new FunctionThread
 		try { function.runThread(function.getFunctionTask());
-		} catch (InterruptedException e) {}
+		} catch (InterruptedException e) {
+			System.out.println(e.getStackTrace().toString());
+		} //End FunctionThread
+
 		
 		long timeEnd = System.nanoTime();	
 
@@ -41,9 +44,11 @@ public void startRun() {
 			messageRun += "Stopped thread...";
 		}
 		messageRun += printTime(timeEnd - timeStart);
-
 		
 	}
+	
+	
+	
 
 	public void startTest() {
 		messageTest+= title + "\n\n";
@@ -70,9 +75,9 @@ public void startRun() {
 			long timeEnd = System.nanoTime();
 			timetotal += (timeEnd - timeStart);
 //			messageTest += "Test Iteration " + i + "\n\n";
-//			messageTest += "a (" + (a.bitLength() + 1) + "Bits): "+ a + "\n";
-//			messageTest += "b (" + (b.bitLength() + 1) + "Bits): "+ b + "\n";
-//			messageTest += "\n = "+ Arrays.toString(res) + "\n\n";
+//			messageTest += "a (" + (a.bitLength() + 1) + " Bits): " 		+ a + "\n";
+//			messageTest += "b (" + (b.bitLength() + 1) + " Bits): " 		+ b + "\n\n";
+//			messageTest += "  (" + (res.bitLength() + 1) + " Bits) = " 		+ res + "\n\n";
 		}
 		timetotal = (timetotal / testloops);
 

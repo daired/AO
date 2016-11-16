@@ -10,6 +10,7 @@ import hk.htw.ao.control.FibRekursivController;
 import hk.htw.ao.control.GCDExtendedController;
 import hk.htw.ao.control.GCDIterativController;
 import hk.htw.ao.control.GCDRekursivController;
+import hk.htw.ao.control.MergeSortController;
 import hk.htw.ao.control.ModPowController;
 import hk.htw.ao.control.PowController;
 import hk.htw.ao.control.abs.FunctionController;
@@ -27,6 +28,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
@@ -65,6 +67,7 @@ public class Main extends Application implements ChangeListener<String> {
 	public void start(Stage primaryStage){
 		
 		//INIT CONTROLLER
+		controls.add(new MergeSortController());	
 		controls.add(new ModPowController());
 		controls.add(new PowController());
 		controls.add(new GCDExtendedController());
@@ -73,6 +76,7 @@ public class Main extends Application implements ChangeListener<String> {
 		controls.add(new AckermannController());	
 		controls.add(new FibRekursivController());	
 		controls.add(new FibIterativController());	
+
 		
 		
 		primaryStage.setTitle("M10 Algorithms & Optimization");
@@ -211,6 +215,7 @@ public class Main extends Application implements ChangeListener<String> {
 				currentController.setTestMode(newValue);
 			}
 		});
+		
 		buttonPane.getChildren().addAll(btnRun, checkboxTest);
 
 		

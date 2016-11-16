@@ -10,8 +10,10 @@ public class ModPow extends FunctionThread {
 
 	public ModPow(String[] values) {
 		super(values);
-		this.calculation = new Calculation() {
+		this.functiontask = new FunctionTask() {
 
+			// Triggered by this.runThread() - defined in abstract FunctionThread
+			// Input values, call function(s) and set result
 			protected Object call() throws Exception {
 				BigInteger a = new BigInteger(parameter[0]);
 				BigInteger n = new BigInteger(parameter[1]);
@@ -28,9 +30,14 @@ public class ModPow extends FunctionThread {
 
 	
 	/**
+	 * ModPow (BigInt implementation)
 	 * 
+	 * @param a
+	 * @param n
+	 * @param m
+	 * @return
 	 */
-	private BigInteger modPow(BigInteger a, BigInteger n, BigInteger m) {
+	public static BigInteger modPow(BigInteger a, BigInteger n, BigInteger m) {
 		// Definiert für a, m,n > 0, sonst -1
 		if (a.compareTo(BigInteger.ZERO) > 0 && m.compareTo(BigInteger.ZERO) > 0 && n.compareTo(BigInteger.ZERO) >= 0) {
 			BigInteger res = BigInteger.ONE;
@@ -55,6 +62,45 @@ public class ModPow extends FunctionThread {
 		} 
 		else
 			return new BigInteger("-1");
+	}
+	
+	
+	
+	/**
+	 * ModPow (Int implementation - not in use)
+	 * 
+	 * @param a
+	 * @param n
+	 * @param m
+	 * @return
+	 */
+	public static int modPowInt(int a, int n, int m) {
+		// Definiert für a, m,n > 0, sonst -1
+		if (a > 0 && m > 0 && n >= 0) {
+			// log base 2 für HighestOneBit zur Berechnung der genutzten Bits
+			int bitlength = (int) (Math.log((double) Integer.highestOneBit(n)) / Math.log(2.0));
+			int res = 1;
+			for (int i = 1; i <= bitlength; i++) {
+				// bitshift from right to left
+				if ((n & (1 << i)) == 0)
+					continue;
+				int tmp = a;
+				for (int j = 0; j < i; j++)
+					// Es Gilt: a^(n1 * n2) mod m = (a^n1 mod m)^n2 mod m
+					tmp = ((tmp * tmp) % m);
+
+				// Es gilt: a^(n1 + n2) mod m = ((a^n1 mod m) * (a^n2 mod m) mod m
+				res = ((res * tmp) % m);
+			}
+
+			if ((n & 1) != 0)
+				// Es gilt: a^(n1 + n2) mod m = ((a^n1 mod m) * (a^n2 mod m) mod
+				// m
+				res = ((res * a) % m);
+
+			return res;
+		} else
+			return -1;
 	}
 
 }

@@ -10,8 +10,10 @@ public class Pow extends FunctionThread {
 
 	public Pow(String[] values) {
 		super(values);
-		this.calculation = new Calculation() {
+		this.functiontask = new FunctionTask() {
 
+			// Triggered by this.runThread() - defined in abstract FunctionThread
+			// Input values, call function(s) and set result
 			protected Object call() throws Exception {
 				BigInteger a = new BigInteger(parameter[0]);
 				BigInteger n = new BigInteger(parameter[1]);
@@ -29,7 +31,7 @@ public class Pow extends FunctionThread {
 	/**
 	 * (int, int) --> int
 	 */
-	private BigInteger pow(BigInteger a, BigInteger n){
+	public static BigInteger pow(BigInteger a, BigInteger n){
 		// Definiert für a, m,n > 0, sonst -1
 		if (a.compareTo(BigInteger.ZERO) > 0 && n.compareTo(BigInteger.ZERO) >= 0) {
 			BigInteger res = BigInteger.ONE;

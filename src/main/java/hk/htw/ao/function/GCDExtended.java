@@ -10,8 +10,10 @@ public class GCDExtended extends FunctionThread {
 	
 	public GCDExtended(String[] values) {
 		super(values);
-		this.calculation = new Calculation() {
+		this.functiontask = new FunctionTask() {
 
+			// Triggered by this.runThread() - defined in abstract FunctionThread
+			// Input values, call function(s) and set result
 			protected Object call() throws Exception {
 				BigInteger a = new BigInteger(parameter[0]);
 				BigInteger b = new BigInteger(parameter[1]);
@@ -27,7 +29,7 @@ public class GCDExtended extends FunctionThread {
 	/**
 	 * 
 	 */
-	private BigInteger[] extendedGCD(BigInteger a, BigInteger b) {
+	public static BigInteger[] extendedGCD(BigInteger a, BigInteger b) {
 		BigInteger uc, vc, ud, vd, c, d, q;
 
 		if (a.compareTo(BigInteger.ZERO) >= 0 && b.compareTo(BigInteger.ZERO) >= 0

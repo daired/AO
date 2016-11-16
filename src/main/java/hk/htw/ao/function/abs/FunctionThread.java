@@ -7,28 +7,28 @@ public abstract class FunctionThread{
 	protected final long TIMEOUT_MILLIS = 1000*30; // 30 sec
 	
 	protected String[] parameter;
-	protected Calculation calculation;
+	protected FunctionTask functiontask;
+	protected Thread thread;
 	
 	public FunctionThread(String[] parameter){
 		this.parameter = parameter;
 	}
 
-	protected abstract class Calculation extends Task<Object>{ }
+	protected abstract class FunctionTask extends Task<Object>{ }
 
-	public Calculation getCalculator() {
-		return this.calculation;
+	public FunctionTask getFunctionTask() {
+		return this.functiontask;
 	}
 	
 	
-	public void runThread(Calculation calculator) throws InterruptedException {
-		Thread t = new Thread(calculator);
-		t.setDaemon(true);
-		t.start();
-		t.join(TIMEOUT_MILLIS); 
-		if(!t.isAlive()){
+	public void runThread(FunctionTask functiontask) throws InterruptedException {
+		thread = new Thread(functiontask);
+		thread.setDaemon(true);
+		thread.start();
+		thread.join(TIMEOUT_MILLIS); 
+		if(!thread.isAlive()){
 			//TODO ... Success
 		}
-
 	}
 	
 
