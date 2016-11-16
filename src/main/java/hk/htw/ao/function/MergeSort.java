@@ -21,7 +21,9 @@ public class MergeSort extends FunctionThread {
 				BigInteger[] array = RANDOM.generateRandomUnsortedBigIntList(
 						new Integer(parameter[1]), new Integer(parameter[0]));
 				
-				return res = mergeSort(array);			
+				mergeSort(array);		
+				
+				return array;
 		    }
 		};
 	}
@@ -38,7 +40,7 @@ public class MergeSort extends FunctionThread {
 	 * 
 	 * bigInt[] --> bigInt[]
 	 */
-	public static BigInteger[] mergeSort(BigInteger[] array){
+	public static void mergeSort(BigInteger[] array){
 		
 		if (array.length > 1) {
 			int q = array.length / 2;
@@ -53,14 +55,12 @@ public class MergeSort extends FunctionThread {
 			mergeSort(l);
 			mergeSort(r);
 	
-			array = merge(l,r);
+			merge(array,l,r);
 		}
-		return array;
 	}
 	
 	// Helper 
-	private static BigInteger[] merge(BigInteger[] l, BigInteger[] r){
-		BigInteger[] array = new BigInteger[l.length + r.length];
+	private static void merge(BigInteger[]array, BigInteger[] l, BigInteger[] r){
 		int iL = 0;
 		int iR = 0;
 		int iRes = 0;
@@ -87,8 +87,8 @@ public class MergeSort extends FunctionThread {
 			iR++;
 			iRes++;
 		}
+
 		
-		return array;
 	}
 
 }

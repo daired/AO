@@ -19,7 +19,9 @@ public class InsertionSort extends FunctionThread {
 				int[] array = RANDOM.generateRandomUnsortedIntList(
 						new Integer(parameter[1]), new Integer(parameter[0]));
 				
-				return res = insertionSortInt(array);		
+				insertionSortInt(array);	
+				
+				return array;
 		    }
 		};
 	}
@@ -36,7 +38,7 @@ public class InsertionSort extends FunctionThread {
 	 * 
 	 * Int[] --> Int[]
 	 */
-	public static int[] insertionSortInt(int[] a) {
+	public static void insertionSortInt(int[] a) {
         int n = a.length;
         for (int i = 0; i < n-1; i++) {
             for (int j = i+1; j > 0; j--) {
@@ -46,7 +48,6 @@ public class InsertionSort extends FunctionThread {
                 swap(a, j-1, j);
             }
         }
-        return a;
 	}
 	
 	

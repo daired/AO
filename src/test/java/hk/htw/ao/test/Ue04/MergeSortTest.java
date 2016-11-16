@@ -1,11 +1,10 @@
 package hk.htw.ao.test.Ue04;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.math.BigInteger;
 import java.util.Arrays;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import hk.htw.ao.control.abs.FunctionController;
@@ -15,12 +14,12 @@ import hk.htw.ao.util.OptimizedRandom;
 public class MergeSortTest {
 
 	private final OptimizedRandom RANDOM = OptimizedRandom.getInstance();
+	private final static String TESTTITLE = "Merge Sort";
 	
-	private final static String TESTTITLE = "Insertion Sort";
-	private final long warmuploops = 2;
-	private final long testloops = 5;
+	private final long warmuploops = 100;
+	private final long testloops = 1000;
 	private final int bitlength = 128;
-	private final int listlength = 100;
+	private final int listlength = 1000;
 	
 	@Test
 	public void testRandomArray() {
@@ -30,36 +29,31 @@ public class MergeSortTest {
 		// Warmup Phase
 		for (int i = 0; i < warmuploops; i++) {
 			// Input parameter
-			BigInteger[] unsortedArray = RANDOM.generateRandomUnsortedBigIntList(bitlength, listlength);
+			BigInteger[] inputArray = RANDOM.generateRandomUnsortedBigIntList(bitlength, listlength);
 			// Call public static methode from Function class
-			MergeSort.mergeSort(unsortedArray);
+			MergeSort.mergeSort(inputArray);
 		}
 
 		// Test Phase
 		for (int i = 0; i < testloops; i++) {
 
 			// Input parameter
-			BigInteger[] unsortedArray = RANDOM.generateRandomUnsortedBigIntList(bitlength, listlength);
-			BigInteger[] unsortedCopy = Arrays.copyOf(unsortedArray, unsortedArray.length);
+			BigInteger[] inputArray = RANDOM.generateRandomUnsortedBigIntList(bitlength, listlength);
+			BigInteger[] sortedArray = Arrays.copyOf(inputArray, inputArray.length);
 
 			// Start timecount
 			long timeStart = System.nanoTime();
 
 			// Call public static methode from Function class
-			BigInteger[] sortedArray = MergeSort.mergeSort(unsortedCopy);
-
+			MergeSort.mergeSort(sortedArray);
+			
 			// End timecount
 			long timeEnd = System.nanoTime();
 			timetotal += (timeEnd - timeStart);
-
-			// System.out
-			System.out.println(TESTTITLE + " with listlength = " + listlength + " and bitlength = " + bitlength + " : \n\n" 
-					+ "unssorted : " + Arrays.toString(unsortedArray) + "\n"
-					+ "sorted : " + Arrays.toString(sortedArray) + "\n");
+			
 			
 			//asserts
-			isSorted(sortedArray);
-
+			isSortedBig(sortedArray);
 		}
 		timetotal = (timetotal / testloops);
 
@@ -68,7 +62,7 @@ public class MergeSortTest {
 				+ FunctionController.printTime(timetotal));
 	}
 
-	@Ignore
+	
 	@Test
 	public void testSortedArrays() {
 
@@ -77,9 +71,9 @@ public class MergeSortTest {
 		// Warmup Phase
 		for (int i = 0; i < warmuploops; i++) {
 			// Input parameter
-			BigInteger[] unsortedArray = RANDOM.generateRandomUnsortedBigIntList(bitlength, listlength);
+			BigInteger[] inputArray = RANDOM.generateRandomUnsortedBigIntList(bitlength, listlength);
 			// Call public static methode from Function class
-			MergeSort.mergeSort(unsortedArray);
+			MergeSort.mergeSort(inputArray);
 		}
 
 		// Test Phase
@@ -88,28 +82,23 @@ public class MergeSortTest {
 			// Input parameter
 			BigInteger[] inputArray = RANDOM.generateRandomUnsortedBigIntList(bitlength, listlength);
 			MergeSort.mergeSort(inputArray);
-			BigInteger[] inputCopy = Arrays.copyOf(inputArray, inputArray.length);
-
-			//asserts
-			isSorted(inputArray);
+			BigInteger[] sortedArray = Arrays.copyOf(inputArray, inputArray.length);
 			
+			//asserts
+			isSortedBig(inputArray);
+
 			// Start timecount
 			long timeStart = System.nanoTime();
 
 			// Call public static methode from Function class
-			BigInteger[] sortedArray = MergeSort.mergeSort(inputCopy);
-
+			MergeSort.mergeSort(sortedArray);
+			
 			// End timecount
 			long timeEnd = System.nanoTime();
 			timetotal += (timeEnd - timeStart);
 
-			// System.out
-			System.out.println(TESTTITLE + " with listlength = " + listlength + " and bitlength = " + bitlength + " : \n\n"
-					+ "sorted input : " + Arrays.toString(inputArray) + "\n"
-					+ "sorted : " + Arrays.toString(sortedArray) + "\n");
-			
 			//asserts
-			isSorted(sortedArray);
+			isSortedBig(sortedArray);
 		}
 		timetotal = (timetotal / testloops);
 
@@ -118,8 +107,10 @@ public class MergeSortTest {
 				+ FunctionController.printTime(timetotal));
 
 	}
+
 	
-	private void isSorted(BigInteger[] arr){
+	
+	private void isSortedBig(BigInteger[] arr){
 		for (int i = 0; i< arr.length-2;i++) {
 			if((arr[i].compareTo(arr[i+1]) <= 0))
 				assertTrue(true);
@@ -130,6 +121,5 @@ public class MergeSortTest {
 			
 		}
 	}
-	
 	
 }

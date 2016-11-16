@@ -4,11 +4,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import hk.htw.ao.control.abs.FunctionController;
-import hk.htw.ao.function.InsertionSort;
 import hk.htw.ao.function.QuickSort;
 import hk.htw.ao.util.OptimizedRandom;
 
@@ -17,13 +15,14 @@ public class QuickSortTest {
 	private final OptimizedRandom RANDOM = OptimizedRandom.getInstance();
 	private final static String TESTTITLE = "Quick Sort";
 	
+	private final long warmuploops = 100;
+	private final long testloops = 1000;
+	private final int bitlength = 128;
+	private final int listlength = 1000;
+	
 	@Test
 	public void testRandomArray() {
 
-		final long warmuploops = 2;
-		final long testloops = 5;
-		final int bitlength = 128;
-		final int listlength = 100;
 		long timetotal = 0;
 
 		// Warmup Phase
@@ -61,14 +60,10 @@ public class QuickSortTest {
 				+ FunctionController.printTime(timetotal));
 	}
 
-	@Ignore
+	
 	@Test
 	public void testSortedArrays() {
 
-		final long warmuploops = 2;
-		final long testloops = 5;
-		final int bitlength = 128;
-		final int listlength = 10;
 		long timetotal = 0;
 
 		// Warmup Phase
@@ -83,8 +78,9 @@ public class QuickSortTest {
 		for (int i = 0; i < testloops; i++) {
 
 			// Input parameter
-			int[] inputArray = InsertionSort.insertionSortInt(RANDOM.generateRandomUnsortedIntList(bitlength, listlength));
-			int[] inputCopy = Arrays.copyOf(inputArray, inputArray.length);
+			int[] inputArray = RANDOM.generateRandomUnsortedIntList(bitlength, listlength);
+			QuickSort.quickSortInt(inputArray, 0 , inputArray.length-1);
+			int[] sortedArray = Arrays.copyOf(inputArray, inputArray.length);
 			
 			//asserts
 			isSortedInt(inputArray);
@@ -93,17 +89,12 @@ public class QuickSortTest {
 			long timeStart = System.nanoTime();
 
 			// Call public static methode from Function class
-			int[] sortedArray = InsertionSort.insertionSortInt(inputCopy);
-
+			QuickSort.quickSortInt(sortedArray, 0 , sortedArray.length-1);
+			
 			// End timecount
 			long timeEnd = System.nanoTime();
 			timetotal += (timeEnd - timeStart);
 
-			// System.out
-			System.out.println(TESTTITLE + " with listlength = " + listlength + " and bitlength = " + bitlength + " : \n\n"
-					+ "sorted input : " + Arrays.toString(inputArray) + "\n"
-					+ "sorted : " + Arrays.toString(sortedArray) + "\n");
-			
 			//asserts
 			isSortedInt(sortedArray);
 		}
