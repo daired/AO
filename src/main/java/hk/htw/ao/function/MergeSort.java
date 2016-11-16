@@ -18,7 +18,7 @@ public class MergeSort extends FunctionThread {
 			// Input values, call function(s) and set result
 			protected Object call() throws Exception {
 				
-				BigInteger[] array = RANDOM.generateRandomUnsortedList(
+				BigInteger[] array = RANDOM.generateRandomUnsortedBigIntList(
 						new Integer(parameter[1]), new Integer(parameter[0]));
 				
 				return res = mergeSort(array);			
