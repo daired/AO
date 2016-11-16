@@ -9,12 +9,13 @@ import org.junit.Test;
 
 import hk.htw.ao.control.abs.FunctionController;
 import hk.htw.ao.function.InsertionSort;
+import hk.htw.ao.function.QuickSort;
 import hk.htw.ao.util.OptimizedRandom;
 
-public class IsertionSortTest {
+public class QuickSortTest {
 
 	private final OptimizedRandom RANDOM = OptimizedRandom.getInstance();
-	private final static String TESTTITLE = "Insertion Sort";
+	private final static String TESTTITLE = "Quick Sort";
 	
 	@Test
 	public void testRandomArray() {
@@ -22,7 +23,7 @@ public class IsertionSortTest {
 		final long warmuploops = 2;
 		final long testloops = 5;
 		final int bitlength = 128;
-		final int listlength = 5000;
+		final int listlength = 100;
 		long timetotal = 0;
 
 		// Warmup Phase
@@ -30,7 +31,7 @@ public class IsertionSortTest {
 			// Input parameter
 			int[] unsortedArray = RANDOM.generateRandomUnsortedIntList(bitlength, listlength);
 			// Call public static methode from Function class
-			InsertionSort.insertionSortInt(unsortedArray);
+			QuickSort.quickSortInt(unsortedArray, 0, unsortedArray.length-1);
 		}
 
 		// Test Phase
@@ -38,22 +39,17 @@ public class IsertionSortTest {
 
 			// Input parameter
 			int[] unsortedArray = RANDOM.generateRandomUnsortedIntList(bitlength, listlength);
-			int[] unsortedCopy = Arrays.copyOf(unsortedArray, unsortedArray.length);
+			int[] sortedArray = Arrays.copyOf(unsortedArray, unsortedArray.length);
 
 			// Start timecount
 			long timeStart = System.nanoTime();
 
 			// Call public static methode from Function class
-			int[] sortedArray = InsertionSort.insertionSortInt(unsortedCopy);
+			QuickSort.quickSortInt(sortedArray, 0 , sortedArray.length-1);
 
 			// End timecount
 			long timeEnd = System.nanoTime();
 			timetotal += (timeEnd - timeStart);
-
-			// System.out
-			System.out.println(TESTTITLE + " with listlength = " + listlength + " and bitlength = " + bitlength + " : \n\n" 
-					+ "unssorted : " + Arrays.toString(unsortedArray) + "\n"
-					+ "sorted : " + Arrays.toString(sortedArray) + "\n");
 			
 			//asserts
 			isSortedInt(sortedArray);
@@ -65,66 +61,14 @@ public class IsertionSortTest {
 				+ FunctionController.printTime(timetotal));
 	}
 
-	@Test
 	@Ignore
-	public void testFixedArrays() {
-
-		final long warmuploops = 2;
-		final long testloops = 1;
-		final int bitlength = 128;
-		final int listlength = 1000;
-		long timetotal = 0;
-
-		// Warmup Phase
-		for (int i = 0; i < warmuploops; i++) {
-			// Input parameter
-			int[] unsortedArray = RANDOM.generateRandomUnsortedIntList(bitlength, listlength);
-			// Call public static methode from Function class
-			InsertionSort.insertionSortInt(unsortedArray);
-		}
-
-		// Test Phase
-		for (int i = 0; i < testloops; i++) {
-
-			//TODO 
-			// Input parameter
-			int[] unsortedArray = new int[] { 2, 4, 6, 3 };
-			int[] unsortedCopy = Arrays.copyOf(unsortedArray, unsortedArray.length);
-
-			// Start timecount
-			long timeStart = System.nanoTime();
-
-			// Call public static methode from Function class
-			int[] sortedArray = InsertionSort.insertionSortInt(unsortedCopy);
-
-			// End timecount
-			long timeEnd = System.nanoTime();
-			timetotal += (timeEnd - timeStart);
-
-			// System.out
-			System.out.println(TESTTITLE + " with listlength = " + listlength + " and bitlength = " + bitlength + " : \n\n"
-					+ "unssorted : " + Arrays.toString(unsortedArray) + "\n"
-					+ "sorted : " + Arrays.toString(sortedArray) + "\n");
-			
-			//asserts
-			isSortedInt(sortedArray);
-
-		}
-		timetotal = (timetotal / testloops);
-
-		// System.out time
-		System.out.println(TESTTITLE + " with listlength = " + listlength + " and bitlength = " + bitlength + " in " + testloops + " test loops and with " + warmuploops + " warmup loops \n\n"
-				+ FunctionController.printTime(timetotal));
-
-	}
-
 	@Test
 	public void testSortedArrays() {
 
 		final long warmuploops = 2;
 		final long testloops = 5;
 		final int bitlength = 128;
-		final int listlength = 5000;
+		final int listlength = 10;
 		long timetotal = 0;
 
 		// Warmup Phase
@@ -132,7 +76,7 @@ public class IsertionSortTest {
 			// Input parameter
 			int[] unsortedArray = RANDOM.generateRandomUnsortedIntList(bitlength, listlength);
 			// Call public static methode from Function class
-			InsertionSort.insertionSortInt(unsortedArray);
+			QuickSort.quickSortInt(unsortedArray, 0 , unsortedArray.length-1);
 		}
 
 		// Test Phase
@@ -171,6 +115,8 @@ public class IsertionSortTest {
 
 	}
 
+	
+	
 	private void isSortedInt(int[] arr){
 		for (int i = 0; i< arr.length-2;i++) {
 			if((arr[i] <= arr[i+1]))

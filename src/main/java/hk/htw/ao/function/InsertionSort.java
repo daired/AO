@@ -1,7 +1,5 @@
 package hk.htw.ao.function;
 
-import java.math.BigInteger;
-
 import hk.htw.ao.function.abs.FunctionThread;
 import hk.htw.ao.util.OptimizedRandom;
 
@@ -18,11 +16,10 @@ public class InsertionSort extends FunctionThread {
 			// Input values, call function(s) and set result
 			protected Object call() throws Exception {
 				
-//				BigInteger[] array = RANDOM.generateRandomUnsortedList(
-//						new Integer(parameter[1]), new Integer(parameter[0]));
-//				
-//				return res = mergeSort(array);		
-				return null;
+				int[] array = RANDOM.generateRandomUnsortedIntList(
+						new Integer(parameter[1]), new Integer(parameter[0]));
+				
+				return res = insertionSortInt(array);		
 		    }
 		};
 	}
@@ -39,7 +36,7 @@ public class InsertionSort extends FunctionThread {
 	 * 
 	 * Int[] --> Int[]
 	 */
-	public static int[] insertionSort(int[] a) {
+	public static int[] insertionSortInt(int[] a) {
         int n = a.length;
         for (int i = 0; i < n-1; i++) {
             for (int j = i+1; j > 0; j--) {
