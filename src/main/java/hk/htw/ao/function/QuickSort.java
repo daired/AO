@@ -19,9 +19,9 @@ public class QuickSort extends FunctionThread {
 				int[] array = RANDOM.generateRandomUnsortedIntList(
 						new Integer(parameter[1]), new Integer(parameter[0]));
 				
-				quickSortInt(array, 0, array.length);	
+				quickSortInt(array, 0, array.length-1);	
 				
-				return array;
+				return res = array;
 		    }
 		};
 	}

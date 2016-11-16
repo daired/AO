@@ -23,7 +23,7 @@ public class MergeSort extends FunctionThread {
 				
 				mergeSort(array);		
 				
-				return array;
+				return res = array;
 		    }
 		};
 	}
@@ -67,6 +67,64 @@ public class MergeSort extends FunctionThread {
 		
 		while (iL < l.length && iR < r.length) {
 			if (l[iL].compareTo(r[iR]) < 0) {
+				array[iRes] = l[iL];
+				iL += 1;
+			} else {
+				array[iRes] = r[iR];
+				iR++;
+			}
+			iRes++;
+		}
+
+		while (iL < l.length) {
+			array[iRes] = l[iL];
+			iL++;
+			iRes++;
+		}
+
+		while (iR < r.length) {
+			array[iRes] = r[iR];
+			iR++;
+			iRes++;
+		}
+
+		
+	}
+	
+	
+	/**
+	 * 
+	 * MergeSort implementation Rekursiv
+	 * 
+	 * Int[] --> Int[]
+	 */
+	public static void mergeSortInt(int[] array){
+		
+		if (array.length > 1) {
+			int q = array.length / 2;
+			int[] l = new int[q];
+			for(int i = 0; i<= l.length-1; i++)
+				l[i] = array[i];
+			
+			int[] r = new int[array.length-q];
+			for(int i = q; i <= array.length-1; i++)
+				r[i - q] = array[i];
+			
+			mergeSortInt(l);
+			mergeSortInt(r);
+	
+			mergeInt(array,l,r);
+		}
+	}
+	
+	// Helper 
+	private static void mergeInt(int[]array, int[] l, int[] r){
+		int iL = 0;
+		int iR = 0;
+		int iRes = 0;
+		
+		while (iL < l.length && iR < r.length) {
+			if (l[iL] < r[iR]) {
 				array[iRes] = l[iL];
 				iL += 1;
 			} else {

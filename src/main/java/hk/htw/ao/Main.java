@@ -14,6 +14,7 @@ import hk.htw.ao.control.InsertionSortController;
 import hk.htw.ao.control.MergeSortController;
 import hk.htw.ao.control.ModPowController;
 import hk.htw.ao.control.PowController;
+import hk.htw.ao.control.QuickSortController;
 import hk.htw.ao.control.abs.FunctionController;
 import hk.htw.ao.gui.Console;
 import hk.htw.ao.gui.ParameterPaneItem;
@@ -69,6 +70,7 @@ public class Main extends Application implements ChangeListener<String> {
 		//INIT CONTROLLER
 		controls.add(new InsertionSortController());	
 		controls.add(new MergeSortController());	
+		controls.add(new QuickSortController());	
 		controls.add(new ModPowController());
 		controls.add(new PowController());
 		controls.add(new GCDExtendedController());

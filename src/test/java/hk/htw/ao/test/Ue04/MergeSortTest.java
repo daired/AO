@@ -29,23 +29,23 @@ public class MergeSortTest {
 		// Warmup Phase
 		for (int i = 0; i < warmuploops; i++) {
 			// Input parameter
-			BigInteger[] inputArray = RANDOM.generateRandomUnsortedBigIntList(bitlength, listlength);
+			int[] inputArray = RANDOM.generateRandomUnsortedIntList(bitlength, listlength);
 			// Call public static methode from Function class
-			MergeSort.mergeSort(inputArray);
+			MergeSort.mergeSortInt(inputArray);
 		}
 
 		// Test Phase
 		for (int i = 0; i < testloops; i++) {
 
 			// Input parameter
-			BigInteger[] inputArray = RANDOM.generateRandomUnsortedBigIntList(bitlength, listlength);
-			BigInteger[] sortedArray = Arrays.copyOf(inputArray, inputArray.length);
+			int[] inputArray = RANDOM.generateRandomUnsortedIntList(bitlength, listlength);
+			int[] sortedArray = Arrays.copyOf(inputArray, inputArray.length);
 
 			// Start timecount
 			long timeStart = System.nanoTime();
 
 			// Call public static methode from Function class
-			MergeSort.mergeSort(sortedArray);
+			MergeSort.mergeSortInt(sortedArray);
 			
 			// End timecount
 			long timeEnd = System.nanoTime();
@@ -53,7 +53,7 @@ public class MergeSortTest {
 			
 			
 			//asserts
-			isSortedBig(sortedArray);
+			isSortedInt(sortedArray);
 		}
 		timetotal = (timetotal / testloops);
 
@@ -80,25 +80,25 @@ public class MergeSortTest {
 		for (int i = 0; i < testloops; i++) {
 
 			// Input parameter
-			BigInteger[] inputArray = RANDOM.generateRandomUnsortedBigIntList(bitlength, listlength);
-			MergeSort.mergeSort(inputArray);
-			BigInteger[] sortedArray = Arrays.copyOf(inputArray, inputArray.length);
+			int[] inputArray = RANDOM.generateRandomUnsortedIntList(bitlength, listlength);
+			MergeSort.mergeSortInt(inputArray);
+			int[] sortedArray = Arrays.copyOf(inputArray, inputArray.length);
 			
 			//asserts
-			isSortedBig(inputArray);
+			isSortedInt(inputArray);
 
 			// Start timecount
 			long timeStart = System.nanoTime();
 
 			// Call public static methode from Function class
-			MergeSort.mergeSort(sortedArray);
+			MergeSort.mergeSortInt(sortedArray);
 			
 			// End timecount
 			long timeEnd = System.nanoTime();
 			timetotal += (timeEnd - timeStart);
 
 			//asserts
-			isSortedBig(sortedArray);
+			isSortedInt(sortedArray);
 		}
 		timetotal = (timetotal / testloops);
 
@@ -113,6 +113,18 @@ public class MergeSortTest {
 	private void isSortedBig(BigInteger[] arr){
 		for (int i = 0; i< arr.length-2;i++) {
 			if((arr[i].compareTo(arr[i+1]) <= 0))
+				assertTrue(true);
+			else{
+				assertTrue(false);
+				break;
+			}
+			
+		}
+	}
+	
+	private void isSortedInt(int[] arr){
+		for (int i = 0; i< arr.length-2;i++) {
+			if((arr[i] <= arr[i+1]))
 				assertTrue(true);
 			else{
 				assertTrue(false);

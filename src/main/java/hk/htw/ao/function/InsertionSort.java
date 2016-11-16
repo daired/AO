@@ -21,7 +21,7 @@ public class InsertionSort extends FunctionThread {
 				
 				insertionSortInt(array);	
 				
-				return array;
+				return res = array;
 		    }
 		};
 	}
