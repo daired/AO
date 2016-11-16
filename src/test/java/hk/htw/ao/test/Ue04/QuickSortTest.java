@@ -6,8 +6,8 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-import hk.htw.ao.control.abs.FunctionController;
-import hk.htw.ao.function.QuickSort;
+import hk.htw.ao.control.FunctionController;
+import hk.htw.ao.function.sort.QuickSort;
 import hk.htw.ao.util.OptimizedRandom;
 
 public class QuickSortTest {

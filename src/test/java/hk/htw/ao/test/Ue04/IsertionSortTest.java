@@ -7,8 +7,8 @@ import java.util.Arrays;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import hk.htw.ao.control.abs.FunctionController;
-import hk.htw.ao.function.InsertionSort;
+import hk.htw.ao.control.FunctionController;
+import hk.htw.ao.function.sort.InsertionSort;
 import hk.htw.ao.util.OptimizedRandom;
 
 public class IsertionSortTest {
