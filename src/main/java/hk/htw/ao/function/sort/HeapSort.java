@@ -8,7 +8,7 @@ public class HeapSort extends FunctionThread {
 
 	protected final OptimizedRandom RANDOM = OptimizedRandom.getInstance();
 	private BigInteger[] res;
-	private int length;
+	private static int length;
 
 	public HeapSort(String[] values) {
 		super(values);
@@ -33,12 +33,12 @@ public class HeapSort extends FunctionThread {
 		return res;
 	}
 	
-	public void heapSort(BigInteger[] array){       
+	public static void heapSort(BigInteger[] array){       
         buildMinHeap(array);
         for (int i = length; i > 0; i--) {
             swap(array,0, i);
             length = length-1;
-            maxHeapify(array, 0);
+            minHeapify(array, 0);
         }
     }     
 
@@ -50,10 +50,10 @@ public class HeapSort extends FunctionThread {
 	 * bigInt[] --> bigInt[]
 	 *
 	 */
-    public void buildMinHeap(BigInteger[] arr){
+    public static void buildMinHeap(BigInteger[] arr){
         length = arr.length-1;
         for (int i = length/2; i >= 0; i--){
-        	maxHeapify(arr, i);
+        	minHeapify(arr, i);
         }
                     
     }
@@ -70,7 +70,7 @@ public class HeapSort extends FunctionThread {
 	 * @param array
 	 * @param i
 	 */
-    public void maxHeapify(BigInteger[] array, int i) {
+    public static void minHeapify(BigInteger[] array, int i) {
         int left = 2*i ;
         int right = 2*i + 1;
         int maximum = i;
@@ -81,7 +81,7 @@ public class HeapSort extends FunctionThread {
 
         if (maximum != i) {
             swap(array, i, maximum);
-            maxHeapify(array, maximum);
+            minHeapify(array, maximum);
         }
     }    
 
@@ -89,10 +89,49 @@ public class HeapSort extends FunctionThread {
      *  Function to swap two numbers in an array 
      *  
      */
-    public void swap(BigInteger[] array, int i, int j){
+    public static void swap(BigInteger[] array, int i, int j){
     	BigInteger tmp = array[i];
         array[i] = array[j];
         array[j] = tmp; 
     } 
+    
+    
+    public static void heapSortInt(int[] array){       
+        buildMinHeapInt(array);
+        for (int i = length; i > 0; i--) {
+            swapInt(array,0, i);
+            length = length-1;
+            minHeapifyInt(array, 0);
+        }
+    } 
+    
+    public static void buildMinHeapInt(int[] array){
+        length = array.length-1;
+        for (int i = length/2; i >= 0; i--){
+        	minHeapifyInt(array, i);
+        }
+                    
+    }
+    
+    public static void minHeapifyInt(int[] array, int i) {
+        int left = 2*i ;
+        int right = 2*i + 1;
+        int maximum = i;
+        if (left <= length && array[left] > array[i]  )
+            maximum = left;
+        if (right <= length && array[right] >  array[maximum] )     
+            maximum = right;
+
+        if (maximum != i) {
+            swapInt(array, i, maximum);
+            minHeapifyInt(array, maximum);
+        }
+    } 
+    
+    public static void swapInt(int[] array, int i, int j){
+    	int tmp = array[i];
+        array[i] = array[j];
+        array[j] = tmp; 
+    }
 
 }
