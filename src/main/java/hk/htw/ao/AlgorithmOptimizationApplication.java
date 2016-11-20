@@ -13,6 +13,7 @@ import hk.htw.ao.control.math.GCDIterativController;
 import hk.htw.ao.control.math.GCDRekursivController;
 import hk.htw.ao.control.math.ModPowController;
 import hk.htw.ao.control.math.PowController;
+import hk.htw.ao.control.sort.HeapSortController;
 import hk.htw.ao.control.sort.InsertionSortController;
 import hk.htw.ao.control.sort.MergeSortController;
 import hk.htw.ao.control.sort.QuickSortController;
@@ -72,7 +73,8 @@ public class AlgorithmOptimizationApplication extends Application implements Cha
 		//INIT CONTROLLER
 		controls.add(new InsertionSortController());	
 		controls.add(new MergeSortController());	
-		controls.add(new QuickSortController());	
+		controls.add(new QuickSortController());
+		controls.add(new HeapSortController());
 		controls.add(new ModPowController());
 		controls.add(new PowController());
 		controls.add(new GCDExtendedController());
