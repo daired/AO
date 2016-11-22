@@ -203,10 +203,10 @@ public class SortTest {
 			// System.out time
 			System.out.println(TESTTITLE + "\nwith listlength = " +(listlength * (100*j)) + " and bitlength = "
 					+ bitlength + "\nin " + testloops + " test loops and with " + warmuploops + " warmup loops \n\n"
-					+ "For 01 :" + (timetotal01/1000.) + "milliseconds or " + (timetotal01/1000./1000.*j) + "ms per sort.\n"
-					+ "For 02 :" + (timetotal02/1000.) + "milliseconds or " + (timetotal02/1000./1000.*j) + "ms per sort.\n"
-					+ "For 03 :" + (timetotal03/1000.) + "milliseconds or " + (timetotal03/1000./1000.*j) + "ms per sort.\n"
-					+ "For 04 :" + (timetotal04/1000.) + "milliseconds or " + (timetotal04/1000./1000.*j) + "ms per sort.\n");
+					+ "For 01 :" + (timetotal01/1000.) + "milliseconds or " + (timetotal01/1000./1000.*j) + " ms per sort.\n"
+					+ "For 02 :" + (timetotal02/1000.) + "milliseconds or " + (timetotal02/1000./1000.*j) + " ms per sort.\n"
+					+ "For 03 :" + (timetotal03/1000.) + "milliseconds or " + (timetotal03/1000./1000.*j) + " ms per sort.\n"
+					+ "For 04 :" + (timetotal04/1000.) + "milliseconds or " + (timetotal04/1000./1000.*j) + " ms per sort.\n");
 			timearray01[j-1] = timetotal01; 
 			timearray02[j-1] = timetotal02;
 			timearray03[j-1] = timetotal03; 
