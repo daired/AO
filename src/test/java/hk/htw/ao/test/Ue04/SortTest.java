@@ -18,21 +18,56 @@ public class SortTest {
 	private final OptimizedRandom RANDOM = OptimizedRandom.getInstance();
 	private final static String TESTTITLE = "Vergleich InsertionSort, QuickSort, MergeSort, HeapSort";
 
-	private final long warmuploops = 5000;
-	private final long testloops = 1000;
-	private final int growlimit = 10;
+	/**
+	 *  to measure the time if arrays are growing in size, multiples of 10 are created
+	 *  growlimit = 4 && listlengthStarting = 100 results in
+	 *  testing 100-length arrays, then 1.000-length arrays, then 10.000-length arrays, then 100.000-length arrays
+	 *  
+	 *  Tests running in that time: (short table of measered settings, to be continued) 
+	 *  
+	 *  Nr. 	warmuploops		testloops		growlimit		listlengthStarting		time
+	 *  1		10				10				4				100						~ 180  seconds 		<- best case for growing lists
+	 *  2		20				20				4				100						~ 270  seconds
+	 *  3		10				10				1				100000					~ 120  seconds 		<- best case for one large array (grow=1)
+	 *  4		50				50				1				100000					~  12  minutes !! 	<- not good 
+	 *  5		50				50				3				100						~  20  seconds
+	 *  6		100				100				3				100						~  50  seconds
+	 *  				~ 
+	 */
+	private final long warmuploops = 20;
+	private final long testloops = 20;
 	private final int bitlength = 64;
-	private final int listlength = 10;
+	private final int growlimit = 4; 
+	private final int listlengthStarting = 100;
 	
+	/**
+	 * array for time evaluation: 
+	 * 01: insertion Sort
+	 * 02: merge Sort
+	 * 03: quick Sort
+	 * 04: heap Sort
+	 */
 	private long timetotal01 = 0;
 	private long timetotal02 = 0;
 	private long timetotal03 = 0;
 	private long timetotal04 = 0;
+	
+	/**
+	 * array for saving times for arrays of different size
+	 * case growlimit = 4 && listsizeStarting = 100 resultes in array with time results for
+	 * [100-length time results] [1000-length time results] [1.000-length time results] [10.000-length time results]
+	 */
 	private long[]timearray01 = new long[growlimit];
 	private long[]timearray02 = new long[growlimit];
 	private long[]timearray03 = new long[growlimit];
 	private long[]timearray04 = new long[growlimit];
 
+	/**
+	 * Testing insertion sort on primitive int[] and determines time needed
+	 * time results are saved in format [nanoseconds per sort operation]
+	 * @param unsortedArray : the array to sort with insertion sort
+	 * @param runLength : call with value for warmuploops, testLoops respectively
+	 */
 	public void testInsertionSortInt(int[] unsortedArray, int runLength){
 		int[] sortedArray = Arrays.copyOf(unsortedArray, unsortedArray.length);
 		timetotal01 = 0;
@@ -43,18 +78,22 @@ public class SortTest {
 			InsertionSort.insertionSortInt(sortedArray);
 			// End timecount
 			long timeEnd = System.nanoTime();
-			if(runLength == testloops){
-				timetotal01 += (timeEnd - timeStart);
-			}
+		
+			timetotal01 += (timeEnd - timeStart);
+			
 			// testing if sorted
 			isSortedInt(sortedArray);
 		}
-		// determine value (ms/sort)in case of testing (not warmup)
-		if(runLength == testloops){
-			timetotal01 = (timetotal01 / runLength);
-		}
+		// determine value (ns/sort)in case of testing (not warmup)
+		timetotal01 = (timetotal01 / runLength);
+		
 	}
-	
+	/**
+	 * Testing merge sort on primitive int[] and determines time needed
+	 * time results are saved in format [nanoseconds per sort operation]
+	 * @param unsortedArray : the array to sort with merge sort
+	 * @param runLength : call with value for warmuploops, testLoops respectively
+	 */
 	public void testMergeSortInt(int[] unsortedArray, int runLength){
 		int[] sortedArray = Arrays.copyOf(unsortedArray, unsortedArray.length);
 		timetotal02 = 0;
@@ -65,18 +104,22 @@ public class SortTest {
 			MergeSort.mergeSortInt(sortedArray);
 			// End timecount
 			long timeEnd = System.nanoTime();
-			if(runLength == testloops){
-				timetotal02 += (timeEnd - timeStart);
-			}
+			
+			timetotal02 += (timeEnd - timeStart);
+			
 			// testing if sorted
 			isSortedInt(sortedArray);
 		}
-		// determine value (ms/sort)in case of testing (not warmup)
-		if(runLength == testloops){
-			timetotal02 = (timetotal02 / runLength);
-		}
+		// determine value (ns/sort)in case of testing (not warmup)
+		timetotal02 = (timetotal02 / runLength);
+		
 	}
-	
+	/**
+	 * Testing quick sort on primitive int[] and determines time needed
+	 * time results are saved in format [nanoseconds per sort operation]
+	 * @param unsortedArray : the array to sort with quick sort
+	 * @param runLength : call with value for warmuploops, testLoops respectively
+	 */
 	public void testQuickSortInt(int[] unsortedArray, int runLength){
 		int[] sortedArray = Arrays.copyOf(unsortedArray, unsortedArray.length);
 		timetotal03 = 0;
@@ -87,20 +130,25 @@ public class SortTest {
 			QuickSort.quickSortInt(sortedArray, 0, sortedArray.length - 1);
 			// End timecount
 			long timeEnd = System.nanoTime();
-			if(runLength == testloops){
-				timetotal03 += (timeEnd - timeStart);
-			}
+		
+			timetotal03 += (timeEnd - timeStart);
+			
 			
 			// testing if sorted
 			isSortedInt(sortedArray);
 		}
-		// determine value (ms/sort)in case of testing (not warmup)
-		if(runLength == testloops){
-			timetotal03 = (timetotal03 / runLength);
-		}
+		// determine value (ns/sort)in case of testing (not warmup)
+		
+		timetotal03 = (timetotal03 / runLength);
+		
 		
 	}
-	
+	/**
+	 * Testing heap sort on primitive int[] and determines time needed
+	 * time results are saved in format [nanoseconds per sort operation]
+	 * @param unsortedArray : the array to sort with heap sort
+	 * @param runLength : call with value for warmuploops, testLoops respectively
+	 */
 	public void testHeapSortInt(int[] unsortedArray, int runLength){
 		int[] sortedArray = Arrays.copyOf(unsortedArray, unsortedArray.length);
 		timetotal04 = 0;
@@ -111,17 +159,16 @@ public class SortTest {
 			HeapSort.heapSortInt(sortedArray);
 			// End timecount
 			long timeEnd = System.nanoTime();
-			if(runLength == testloops){
-				timetotal04 += (timeEnd - timeStart);
-			}
-			
+		
+			timetotal04 += (timeEnd - timeStart);
+						
 			// testing if sorted
 			isSortedInt(sortedArray);
 		}
-		// determine value (ms/sort)in case of testing (not warmup)
-		if(runLength == testloops){
-			timetotal04 = (timetotal04 / runLength);
-		}
+		// determine value (ns/sort)in case of testing (not warmup)
+		
+		timetotal04 = (timetotal04 / runLength);
+		
 		
 	}
 	
@@ -129,11 +176,11 @@ public class SortTest {
 	@Test
 	public void testGrowingSortedArrays() {
 
-		// Grow listlength
-		for (int j = 1; j <= growlimit; j++) {
+		
+		for (int j = 0; j < growlimit; j++) {
 			
-			// Input parameter
-			int[] inputArray = RANDOM.generateRandomUnsortedIntList(bitlength, (listlength * (1000*j)));
+			// Input parameter multiples of ( (10^j)*listlength ) -> standard for listlength = 100 -> 100, 1.000, 10.000, 100.000, 1.000.000
+			int[] inputArray = RANDOM.generateRandomUnsortedIntList(bitlength, (int) (listlengthStarting * (Math.pow(10.0, j))));
 			
 			int[] sortedArray01 = Arrays.copyOf(inputArray, inputArray.length);
 			int[] sortedArray02 = Arrays.copyOf(inputArray, inputArray.length);
@@ -146,8 +193,7 @@ public class SortTest {
 				int[] sortedArray = Arrays.copyOf(sortedArray01, sortedArray01.length);
 				// Call public static methode from Function class
 				testInsertionSortInt(sortedArray, (int) warmuploops);
-			}
-			
+			}			
 			// Test Phase InsertionSort
 			for (int i = 0; i < testloops; i++) {
 				int[] sortedArray = Arrays.copyOf(sortedArray01, sortedArray01.length);
@@ -161,8 +207,7 @@ public class SortTest {
 				int[] sortedArray = Arrays.copyOf(sortedArray02, sortedArray02.length);
 				// Call public static methode from Function class
 				testMergeSortInt(sortedArray, (int) warmuploops);
-			}
-			
+			}			
 			// Test Phase MergeSort
 			for (int i = 0; i < testloops; i++) {
 				int[] sortedArray = Arrays.copyOf(sortedArray02, sortedArray02.length);
@@ -176,8 +221,7 @@ public class SortTest {
 				int[] sortedArray = Arrays.copyOf(sortedArray03, sortedArray03.length);
 				// Call public static methode from Function class
 				testQuickSortInt(sortedArray, (int) warmuploops);
-			}
-			
+			}			
 			// Test Phase QuickSort
 			for (int i = 0; i < testloops; i++) {
 				int[] sortedArray = Arrays.copyOf(sortedArray03, sortedArray03.length);
@@ -191,8 +235,7 @@ public class SortTest {
 				int[] sortedArray = Arrays.copyOf(sortedArray04, sortedArray04.length);
 				// Call public static methode from Function class
 				testHeapSortInt(sortedArray, (int) warmuploops);
-			}
-			
+			}			
 			// Test Phase HeapSort
 			for (int i = 0; i < testloops; i++) {
 				int[] sortedArray = Arrays.copyOf(sortedArray04, sortedArray04.length);
@@ -201,16 +244,22 @@ public class SortTest {
 			}
 			
 			// System.out time
-			System.out.println(TESTTITLE + "\nwith listlength = " +(listlength * (100*j)) + " and bitlength = "
+			// results (timetotal01-timetotal04) are in nanoseconds/operation, so formatting:
+			// timetotal			=> nanoseconds /operation
+			// timetotal/1000 		=> microseconds/operation
+			// timetotal/1000/1000  => milliseconds/operation
+			System.out.println(TESTTITLE + "\nwith listlength = " +( (int) (listlengthStarting * (Math.pow(10.0, j))) ) + " and bitlength = "
 					+ bitlength + "\nin " + testloops + " test loops and with " + warmuploops + " warmup loops \n\n"
-					+ "For 01 :" + (timetotal01/1000.) + "milliseconds or " + (timetotal01/1000./1000.*j) + " ms per sort.\n"
-					+ "For 02 :" + (timetotal02/1000.) + "milliseconds or " + (timetotal02/1000./1000.*j) + " ms per sort.\n"
-					+ "For 03 :" + (timetotal03/1000.) + "milliseconds or " + (timetotal03/1000./1000.*j) + " ms per sort.\n"
-					+ "For 04 :" + (timetotal04/1000.) + "milliseconds or " + (timetotal04/1000./1000.*j) + " ms per sort.\n");
-			timearray01[j-1] = timetotal01; 
-			timearray02[j-1] = timetotal02;
-			timearray03[j-1] = timetotal03; 
-			timearray04[j-1] = timetotal04; 
+					+ "For 01 :" + (timetotal01/1000./1000.) + " milliseconds per insertionSort operation.\n"
+					+ "For 02 :" + (timetotal02/1000./1000.) + " milliseconds per mergeSortsort operation.\n"
+					+ "For 03 :" + (timetotal03/1000./1000.) + " milliseconds per quickSort operation.\n"
+					+ "For 04 :" + (timetotal04/1000./1000.) + " milliseconds per heapSort operation.\n");
+			
+					
+			timearray01[j] = timetotal01; 
+			timearray02[j] = timetotal02;
+			timearray03[j] = timetotal03; 
+			timearray04[j] = timetotal04; 
 		}
 		
 		System.out.println(""
