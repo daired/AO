@@ -18,103 +18,195 @@ public class SortTest {
 	private final OptimizedRandom RANDOM = OptimizedRandom.getInstance();
 	private final static String TESTTITLE = "Vergleich InsertionSort, QuickSort, MergeSort, HeapSort";
 
-	private final long warmuploops = 100;
-	private final long testloops = 10;
+	private final long warmuploops = 10;
+	private final long testloops = 1;
 	private final int growlimit = 10;
 	private final int bitlength = 64;
 	private final int listlength = 10;
+	
+	private long timetotal01 = 0;
+	private long timetotal02 = 0;
+	private long timetotal03 = 0;
+	private long timetotal04 = 0;
+	private long[]timearray01 = new long[growlimit];
+	private long[]timearray02 = new long[growlimit];
+	private long[]timearray03 = new long[growlimit];
+	private long[]timearray04 = new long[growlimit];
 
+	public void testInsertionSortInt(int[] unsortedArray, int runLength){
+		int[] sortedArray = Arrays.copyOf(unsortedArray, unsortedArray.length);
+		timetotal01 = 0;
+		for (int i = 0; i < runLength; i++) {
+			// Start timecount InsertionSort
+			long timeStart = System.nanoTime();
+			// Call public static methode from Function class
+			InsertionSort.insertionSortInt(sortedArray);
+			// End timecount
+			long timeEnd = System.nanoTime();
+			if(runLength == testloops){
+				timetotal01 += (timeEnd - timeStart);
+			}
+			// testing if sorted
+			isSortedInt(sortedArray);
+		}
+		// determine value (ms/sort)in case of testing (not warmup)
+		if(runLength == testloops){
+			timetotal01 = (timetotal01 / runLength);
+		}
+	}
+	
+	public void testMergeSortInt(int[] unsortedArray, int runLength){
+		int[] sortedArray = Arrays.copyOf(unsortedArray, unsortedArray.length);
+		timetotal02 = 0;
+		for (int i = 0; i < runLength; i++) {
+			// Start timecount InsertionSort
+			long timeStart = System.nanoTime();
+			// Call public static methode from Function class
+			MergeSort.mergeSortInt(sortedArray);
+			// End timecount
+			long timeEnd = System.nanoTime();
+			if(runLength == testloops){
+				timetotal02 += (timeEnd - timeStart);
+			}
+			// testing if sorted
+			isSortedInt(sortedArray);
+		}
+		// determine value (ms/sort)in case of testing (not warmup)
+		if(runLength == testloops){
+			timetotal02 = (timetotal02 / runLength);
+		}
+	}
+	
+	public void testQuickSortInt(int[] unsortedArray, int runLength){
+		int[] sortedArray = Arrays.copyOf(unsortedArray, unsortedArray.length);
+		timetotal03 = 0;
+		for (int i = 0; i < runLength; i++) {
+			// Start timecount InsertionSort
+			long timeStart = System.nanoTime();
+			// Call public static methode from Function class
+			QuickSort.quickSortInt(sortedArray, 0, sortedArray.length - 1);
+			// End timecount
+			long timeEnd = System.nanoTime();
+			if(runLength == testloops){
+				timetotal03 += (timeEnd - timeStart);
+			}
+			
+			// testing if sorted
+			isSortedInt(sortedArray);
+		}
+		// determine value (ms/sort)in case of testing (not warmup)
+		if(runLength == testloops){
+			timetotal03 = (timetotal03 / runLength);
+		}
+		
+	}
+	
+	public void testHeapSortInt(int[] unsortedArray, int runLength){
+		int[] sortedArray = Arrays.copyOf(unsortedArray, unsortedArray.length);
+		timetotal04 = 0;
+		for (int i = 0; i < runLength; i++) {
+			// Start timecount InsertionSort
+			long timeStart = System.nanoTime();
+			// Call public static methode from Function class
+			HeapSort.heapSortInt(sortedArray);
+			// End timecount
+			long timeEnd = System.nanoTime();
+			if(runLength == testloops){
+				timetotal04 += (timeEnd - timeStart);
+			}
+			
+			// testing if sorted
+			isSortedInt(sortedArray);
+		}
+		// determine value (ms/sort)in case of testing (not warmup)
+		if(runLength == testloops){
+			timetotal04 = (timetotal04 / runLength);
+		}
+		
+	}
+	
+	
 	@Test
 	public void testGrowingSortedArrays() {
-
-		long[]timearray01 = new long[growlimit];
-		long[]timearray02 = new long[growlimit];
-		long[]timearray03 = new long[growlimit];
-		long[]timearray04 = new long[growlimit];
-
-		long timetotal01 = 0;
-		long timetotal02 = 0;
-		long timetotal03 = 0;
-		long timetotal04 = 0;
-
-		// Warmup Phase
-		for (int i = 0; i < warmuploops; i++) {
-			// Input parameter
-			int[] unsortedArray = RANDOM.generateRandomUnsortedIntList(bitlength, listlength);
-			// Call public static methode from Function class
-			QuickSort.quickSortInt(unsortedArray, 0, unsortedArray.length - 1);
-		}
 
 		// Grow listlength
 		for (int j = 1; j <= growlimit; j++) {
 			
-			// Test Phase
-			for (int i = 0; i < testloops; i++) {
-
-				// Input parameter
-				
-				int[] inputArray = RANDOM.generateRandomUnsortedIntList(bitlength, (listlength * (1000*j)));
-
-				//QuickSort.quickSortInt(inputArray, 0, inputArray.length - 1);
-				int[] sortedArray01 = Arrays.copyOf(inputArray, inputArray.length);
-				int[] sortedArray02 = Arrays.copyOf(inputArray, inputArray.length);
-				int[] sortedArray03 = Arrays.copyOf(inputArray, inputArray.length);
-				int[] sortedArray04 = Arrays.copyOf(inputArray, inputArray.length);
-				
-				// asserts
-				// isSortedInt(inputArray);
-
-				// Start timecount InsertionSort
-				long timeStart01 = System.nanoTime();
+			// Input parameter
+			int[] inputArray = RANDOM.generateRandomUnsortedIntList(bitlength, (listlength * (1000*j)));
+			
+			int[] sortedArray01 = Arrays.copyOf(inputArray, inputArray.length);
+			int[] sortedArray02 = Arrays.copyOf(inputArray, inputArray.length);
+			int[] sortedArray03 = Arrays.copyOf(inputArray, inputArray.length);
+			int[] sortedArray04 = Arrays.copyOf(inputArray, inputArray.length);
+			
+			// INSERTIONSORT
+			// Warmup Phase InsertionSort
+			for (int i = 0; i < warmuploops; i++) {
+				int[] sortedArray = Arrays.copyOf(sortedArray01, sortedArray01.length);
 				// Call public static methode from Function class
-				InsertionSort.insertionSortInt(sortedArray01);
-				// End timecount
-				long timeEnd01 = System.nanoTime();
-				timetotal01 += (timeEnd01 - timeStart01);
-				
-				// Start timecount MergeSort
-				long timeStart02 = System.nanoTime();
-				// Call public static methode from Function class
-				MergeSort.mergeSortInt(sortedArray02);
-				// End timecount
-				long timeEnd02 = System.nanoTime();
-				timetotal02 += (timeEnd02 - timeStart02);
-				
-				// Start timecount QuickSort
-				long timeStart03 = System.nanoTime();
-				// Call public static methode from Function class
-				QuickSort.quickSortInt(sortedArray03, 0, sortedArray03.length - 1);
-				// End timecount
-				long timeEnd03 = System.nanoTime();
-				timetotal03 += (timeEnd03 - timeStart03);
-				
-				// Start timecount QuickSort
-				long timeStart04 = System.nanoTime();
-				// Call public static methode from Function class
-				HeapSort.heapSortInt(sortedArray04);
-				// End timecount
-				long timeEnd04 = System.nanoTime();
-				timetotal04 += (timeEnd04 - timeStart04);
-
-				// asserts
-				isSortedInt(sortedArray01);
-				isSortedInt(sortedArray02);
-				isSortedInt(sortedArray03);
-				isSortedInt(sortedArray04);
-
+				testInsertionSortInt(sortedArray, (int) warmuploops);
 			}
-			timetotal01 = (timetotal01 / testloops);
-			timetotal02 = (timetotal02 / testloops);
-			timetotal03 = (timetotal03 / testloops);
-			timetotal04 = (timetotal04 / testloops);
-
+			
+			// Test Phase InsertionSort
+			for (int i = 0; i < testloops; i++) {
+				int[] sortedArray = Arrays.copyOf(sortedArray01, sortedArray01.length);
+				// Call public static methode from Function class
+				testInsertionSortInt(sortedArray, (int) testloops);
+			}
+			
+			// MERGESORT
+			// Warmup Phase MergeSort
+			for (int i = 0; i < warmuploops; i++) {
+				int[] sortedArray = Arrays.copyOf(sortedArray02, sortedArray02.length);
+				// Call public static methode from Function class
+				testMergeSortInt(sortedArray, (int) warmuploops);
+			}
+			
+			// Test Phase MergeSort
+			for (int i = 0; i < testloops; i++) {
+				int[] sortedArray = Arrays.copyOf(sortedArray02, sortedArray02.length);
+				// Call public static methode from Function class
+				testMergeSortInt(sortedArray, (int) testloops);
+			}
+			
+			// QUICKSORT
+			// Warmup Phase QuickSort
+			for (int i = 0; i < warmuploops; i++) {
+				int[] sortedArray = Arrays.copyOf(sortedArray03, sortedArray03.length);
+				// Call public static methode from Function class
+				testQuickSortInt(sortedArray, (int) warmuploops);
+			}
+			
+			// Test Phase QuickSort
+			for (int i = 0; i < testloops; i++) {
+				int[] sortedArray = Arrays.copyOf(sortedArray03, sortedArray03.length);
+				// Call public static methode from Function class
+				testQuickSortInt(sortedArray, (int) testloops);
+			}
+			
+			// HEAPSORT
+			// Warmup Phase HeapSort
+			for (int i = 0; i < warmuploops; i++) {
+				int[] sortedArray = Arrays.copyOf(sortedArray04, sortedArray04.length);
+				// Call public static methode from Function class
+				testHeapSortInt(sortedArray, (int) warmuploops);
+			}
+			
+			// Test Phase HeapSort
+			for (int i = 0; i < testloops; i++) {
+				int[] sortedArray = Arrays.copyOf(sortedArray04, sortedArray04.length);
+				// Call public static methode from Function class
+				testHeapSortInt(sortedArray, (int) testloops);
+			}
+			
 			// System.out time
 			System.out.println(TESTTITLE + "\nwith listlength = " +(listlength * (100*j)) + " and bitlength = "
 					+ bitlength + "\nin " + testloops + " test loops and with " + warmuploops + " warmup loops \n\n"
-					+ "For 01 :" + (timetotal01/1000.) + "milliseconds\n"
-					+ "For 02 :" + (timetotal02/1000.) + "milliseconds\n"
-					+ "For 03 :" + (timetotal03/1000.) + "milliseconds\n"
-					+ "For 04 :" + (timetotal04/1000.) + "milliseconds\n");
+					+ "For 01 :" + (timetotal01/1000.) + "milliseconds or " + (timetotal01/1000./1000.*j) + "ms per sort.\n"
+					+ "For 02 :" + (timetotal02/1000.) + "milliseconds or " + (timetotal02/1000./1000.*j) + "ms per sort.\n"
+					+ "For 03 :" + (timetotal03/1000.) + "milliseconds or " + (timetotal03/1000./1000.*j) + "ms per sort.\n"
+					+ "For 04 :" + (timetotal04/1000.) + "milliseconds or " + (timetotal04/1000./1000.*j) + "ms per sort.\n");
 			timearray01[j-1] = timetotal01; 
 			timearray02[j-1] = timetotal02;
 			timearray03[j-1] = timetotal03; 
