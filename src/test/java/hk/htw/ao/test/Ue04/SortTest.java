@@ -18,8 +18,8 @@ public class SortTest {
 	private final OptimizedRandom RANDOM = OptimizedRandom.getInstance();
 	private final static String TESTTITLE = "Vergleich InsertionSort, QuickSort, MergeSort, HeapSort";
 
-	private final long warmuploops = 10;
-	private final long testloops = 1;
+	private final long warmuploops = 5000;
+	private final long testloops = 1000;
 	private final int growlimit = 10;
 	private final int bitlength = 64;
 	private final int listlength = 10;
