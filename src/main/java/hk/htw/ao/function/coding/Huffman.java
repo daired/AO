@@ -34,11 +34,9 @@ public class Huffman extends FunctionThread {
 		return res;
 	}
 
+
 	/**
-	 * Huffman Encode
-	 * 
-	 * @param input
-	 * @return
+	 * Generate a prefixfree HuffmanTree from a String
 	 */
 	public static HuffmanTreeVertex createHuffmanTree(String input) {
 		char[] splittedInput = input.toCharArray();
@@ -51,7 +49,7 @@ public class Huffman extends FunctionThread {
 			else
 				charCountMap.put(c, (charCountMap.get(c) + 1));
 		}
-
+		
 		Queue<HuffmanTreeVertex> vertexQueue = createHuffmanTreeVertexQueue(charCountMap);
 		while (vertexQueue.size() > 1) {
 			HuffmanTreeVertex v1 = vertexQueue.remove();
@@ -64,9 +62,12 @@ public class Huffman extends FunctionThread {
 		return vertexQueue.remove();		
 	}
 
+	/**
+	 * Encodes a String with a prepared Huffmantree
+	 */
 	public static String huffmannEncode(String input, HuffmanTreeVertex root) {
 		Map<Character, String> codeMap = new HashMap<Character, String>();
-		generateCodeMap(root, codeMap, "");
+		generateCodeMap(codeMap, root, "");
 		
 		StringBuilder stringBuilder = new StringBuilder();
 		for (int i = 0; i < input.length(); i++) {
@@ -75,7 +76,9 @@ public class Huffman extends FunctionThread {
 		return stringBuilder.toString();
 	}
 
-	
+	/**
+	 * Decodes a String with a prepared Huffmantree
+	 */
 	public static String huffmannDecode(String input, HuffmanTreeVertex root) {
 		 StringBuilder stringBuilder = new StringBuilder();
 		 char[] bits = input.toCharArray();	 
@@ -94,18 +97,21 @@ public class Huffman extends FunctionThread {
          }
          return stringBuilder.toString();
 	}
+	
+	
+	
 
-	// rekursiv, put prefixfree code as map values 
-	private static void generateCodeMap(HuffmanTreeVertex vertex, Map<Character, String> map, String s) {
+	// Helper - put prefixfree code as map values, recursive
+	private static void generateCodeMap(Map<Character, String> map, HuffmanTreeVertex vertex, String s) {
 		if (vertex.left == null && vertex.right == null) {
 			map.put(vertex.character, s);
 			return;
 		}
-		generateCodeMap(vertex.left, map, s + '0');
-		generateCodeMap(vertex.right, map, s + '1');
+		generateCodeMap(map, vertex.left, s + '0');
+		generateCodeMap(map, vertex.right, s + '1');
 	}
 
-	// create PrioQueue
+	// Helper - create PrioQueue
 	private static Queue<HuffmanTreeVertex> createHuffmanTreeVertexQueue(Map<Character, Integer> map) {
 		// sort
 		Queue<HuffmanTreeVertex> pq = new PriorityQueue<HuffmanTreeVertex>(new HuffmanTreeVertexComparator());
@@ -114,9 +120,4 @@ public class Huffman extends FunctionThread {
 		}
 		return pq;
 	}
-
-	
-	// internal Helper for PrioQuery
-
-
 }
