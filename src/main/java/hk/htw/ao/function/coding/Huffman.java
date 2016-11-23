@@ -1,6 +1,5 @@
 package hk.htw.ao.function.coding;
 
-import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -13,7 +12,7 @@ import hk.htw.ao.function.coding.helper.HuffmanTreeVertexComparator;
 
 public class Huffman extends FunctionThread {
 
-	private BigInteger res;
+	private String res;
 
 	public Huffman(String[] values) {
 		super(values);
@@ -30,7 +29,7 @@ public class Huffman extends FunctionThread {
 		};
 	}
 
-	public BigInteger getRes() {
+	public String getRes() {
 		return res;
 	}
 
@@ -82,17 +81,11 @@ public class Huffman extends FunctionThread {
 	public static String huffmannDecode(String input, HuffmanTreeVertex root) {
 		 StringBuilder stringBuilder = new StringBuilder();
 		 char[] bits = input.toCharArray();	 
-		 for (int i = 0; i < (bits.length - 1);) {
-        	 HuffmanTreeVertex tmp = root;
-
-             while (tmp.left != null) {
-                 if (bits[i] == '0') {
-                     tmp = tmp.left;
-                 } else {
-                     tmp = tmp.right;
-                 }
-                 i = i + 1;
-            }
+		 for (int i = 0; i < bits.length ; ) {
+        	 HuffmanTreeVertex tmp = root;	 
+        	 for( ; tmp.left != null; i++)
+            	 tmp = bits[i] == '0' ? tmp.left : tmp.right;
+             
              stringBuilder.append(tmp.character);
          }
          return stringBuilder.toString();
