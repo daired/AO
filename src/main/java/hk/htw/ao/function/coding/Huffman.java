@@ -72,18 +72,16 @@ public class Huffman extends FunctionThread {
 		for (int i = 0; i < input.length(); i++) {
 			stringBuilder.append(codeMap.get(input.charAt(i)));
 		}
-
 		return stringBuilder.toString();
 	}
 
 	
 	public static String huffmannDecode(String input, HuffmanTreeVertex root) {
-
 		 StringBuilder stringBuilder = new StringBuilder();
-		 char[] bits = input.toCharArray();
+		 char[] bits = input.toCharArray();	 
 		 for (int i = 0; i < (bits.length - 1);) {
         	 HuffmanTreeVertex tmp = root;
-             // since huffman code generates full binary tree, temp.right is certainly null if temp.left is null.
+
              while (tmp.left != null) {
                  if (bits[i] == '0') {
                      tmp = tmp.left;
