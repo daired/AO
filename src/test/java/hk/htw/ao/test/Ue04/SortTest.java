@@ -34,11 +34,11 @@ public class SortTest {
 	 *  6		100				100				3				100						~  50  seconds
 	 *  				~ 
 	 */
-	private final long warmuploops = 1000;
-	private final long testloops = 1000;
+	private final long warmuploops = 1;
+	private final long testloops = 1;
 	private final int bitlength = 64;
-	private final int growlimit = 1; 
-	private final int listlengthStarting = 1000;
+	private final int growlimit = 5; 
+	private final int listlengthStarting = 100;
 	
 	/**
 	 * array for time evaluation: 
@@ -259,16 +259,16 @@ public class SortTest {
 			// timetotal/1000/1000  => milliseconds/operation
 			System.out.println(TESTTITLE + "\nwith listlength = " +( (int) (listlengthStarting * (Math.pow(10.0, j))) ) + " and bitlength = "
 					+ bitlength + "\nin " + testloops + " test loops and with " + warmuploops + " warmup loops \n\n"
-					+ "For 01 :" + (timetotal01_d/1000./1000.) + " milliseconds per insertionSort operation. (Total: " + (timetotal01/1000./1000./1000.*(warmuploops+testloops)) + " seconds.)\n"
-					+ "For 02 :" + (timetotal02_d/1000./1000.) + " milliseconds per mergeSortsort operation. (Total: " + (timetotal02/1000./1000./1000.*(warmuploops+testloops)) + " seconds.)\n"
-					+ "For 03 :" + (timetotal03_d/1000./1000.) + " milliseconds per quickSort operation. (Total: " + (timetotal03/1000./1000./1000.*(warmuploops+testloops)) + " seconds.)\n"
-					+ "For 04 :" + (timetotal04_d/1000./1000.) + " milliseconds per heapSort operation. (Total: " + (timetotal04/1000./1000./1000.*(warmuploops+testloops)) + " seconds.)\n");
+					+ "For 01 :" + (timetotal01_d/1000./1000.) + " milliseconds per insertionSort operation. (Total: " + (timetotal01/1000./1000./1000.) + " seconds.)\n"
+					+ "For 02 :" + (timetotal02_d/1000./1000.) + " milliseconds per mergeSortsort operation. (Total: " + (timetotal02/1000./1000./1000.) + " seconds.)\n"
+					+ "For 03 :" + (timetotal03_d/1000./1000.) + " milliseconds per quickSort operation. (Total: " + (timetotal03/1000./1000./1000.) + " seconds.)\n"
+					+ "For 04 :" + (timetotal04_d/1000./1000.) + " milliseconds per heapSort operation. (Total: " + (timetotal04/1000./1000./1000.) + " seconds.)\n");
 			
 					
-			timearray01[j] = timetotal01; 
-			timearray02[j] = timetotal02;
-			timearray03[j] = timetotal03; 
-			timearray04[j] = timetotal04; 
+			timearray01[j] = (long)timetotal01_d; 
+			timearray02[j] = (long)timetotal02_d;
+			timearray03[j] = (long)timetotal03_d; 
+			timearray04[j] = (long)timetotal04_d; 
 		}
 		
 		System.out.println(""
