@@ -10,6 +10,7 @@ import java.nio.file.Path;
 
 import org.junit.Test;
 
+import hk.htw.ao.function.coding.Huffman;
 import hk.htw.ao.util.OptimizedRandom;
 
 public class HuffmanTest {
@@ -24,13 +25,17 @@ public class HuffmanTest {
 	
 	@Test
 	public void testEncode() {
-		char[] input = readTestFile();
+		String input = readTestFile("huffmanInputTest.txt");
+		String encodedString = Huffman.huffmannEncode(input);
+		writeTestFile(encodedString, "huffmanDecodeTest.txt");
+
 	}
 
 	@Test
 	public void testDecode() {
-		String output = "Test With space";
-		writeTestFile(output);
+		String output = readTestFile("huffmanOutputTest.txt").toString();
+		String decodedString = Huffman.huffmannDecode(output);
+		writeTestFile(decodedString, "huffmanDecodeTest.txt");
 
 	}
 	
@@ -38,26 +43,24 @@ public class HuffmanTest {
 	/*
 	 *  Helper
 	 */
-	private char[] readTestFile() {
-		char[] output = {};
-		Path file = FileSystems.getDefault().getPath("assets", "huffmanInputTest.txt");
+	private String readTestFile(String filename) {
+		String output = "";
+		Path file = FileSystems.getDefault().getPath("assets", filename);
 		Charset charset = Charset.forName("UTF-8");
 		try (BufferedReader reader = Files.newBufferedReader(file, charset)) {
 		    String line = null;
 		    while ((line = reader.readLine()) != null) {
-		    	output = concatCharArrays(output, line.toCharArray());		        
+		    	output += line;		        
 		    }
 		} catch (IOException x) {
 		    System.err.format("IOException: %s%n", x);
-		}		
-		
+		}				
 		return output;
 	}
 	
 	
-	private void writeTestFile(String output) {
-		Path file = FileSystems.getDefault().getPath("assets", "huffmanOutputTest.txt");
-
+	private void writeTestFile(String output, String filename) {
+		Path file = FileSystems.getDefault().getPath("assets", filename);
 		Charset charset = Charset.forName("UTF-8");
 		try (BufferedWriter writer = Files.newBufferedWriter(file, charset)) {
 		    writer.write(output, 0, output.length());
