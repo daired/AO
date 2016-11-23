@@ -199,57 +199,57 @@ public class SortTest {
 			// INSERTIONSORT
 			// Warmup Phase InsertionSort
 			for (int i = 0; i < warmuploops; i++) {
-				int[] sortedArray = Arrays.copyOf(sortedArray01, sortedArray01.length);
+				
 				// Call public static methode from Function class
-				testInsertionSortInt(sortedArray, (int) warmuploops);
+				testInsertionSortInt(sortedArray01, (int) warmuploops);
 			}			
 			// Test Phase InsertionSort
 			for (int i = 0; i < testloops; i++) {
-				int[] sortedArray = Arrays.copyOf(sortedArray01, sortedArray01.length);
+				
 				// Call public static methode from Function class
-				testInsertionSortInt(sortedArray, (int) testloops);
+				testInsertionSortInt(sortedArray01, (int) testloops);
 			}
 			
 			// MERGESORT
 			// Warmup Phase MergeSort
 			for (int i = 0; i < warmuploops; i++) {
-				int[] sortedArray = Arrays.copyOf(sortedArray02, sortedArray02.length);
+				
 				// Call public static methode from Function class
-				testMergeSortInt(sortedArray, (int) warmuploops);
+				testMergeSortInt(sortedArray02, (int) warmuploops);
 			}			
 			// Test Phase MergeSort
 			for (int i = 0; i < testloops; i++) {
-				int[] sortedArray = Arrays.copyOf(sortedArray02, sortedArray02.length);
+				
 				// Call public static methode from Function class
-				testMergeSortInt(sortedArray, (int) testloops);
+				testMergeSortInt(sortedArray02, (int) testloops);
 			}
 			
 			// QUICKSORT
 			// Warmup Phase QuickSort
 			for (int i = 0; i < warmuploops; i++) {
-				int[] sortedArray = Arrays.copyOf(sortedArray03, sortedArray03.length);
+				
 				// Call public static methode from Function class
-				testQuickSortInt(sortedArray, (int) warmuploops);
+				testQuickSortInt(sortedArray03, (int) warmuploops);
 			}			
 			// Test Phase QuickSort
 			for (int i = 0; i < testloops; i++) {
-				int[] sortedArray = Arrays.copyOf(sortedArray03, sortedArray03.length);
+				
 				// Call public static methode from Function class
-				testQuickSortInt(sortedArray, (int) testloops);
+				testQuickSortInt(sortedArray03, (int) testloops);
 			}
 			
 			// HEAPSORT
 			// Warmup Phase HeapSort
 			for (int i = 0; i < warmuploops; i++) {
-				int[] sortedArray = Arrays.copyOf(sortedArray04, sortedArray04.length);
+				
 				// Call public static methode from Function class
-				testHeapSortInt(sortedArray, (int) warmuploops);
-			}			
+				testHeapSortInt(sortedArray04, (int) warmuploops);
+			}		
 			// Test Phase HeapSort
 			for (int i = 0; i < testloops; i++) {
-				int[] sortedArray = Arrays.copyOf(sortedArray04, sortedArray04.length);
+				
 				// Call public static methode from Function class
-				testHeapSortInt(sortedArray, (int) testloops);
+				testHeapSortInt(sortedArray04, (int) testloops);
 			}
 			
 			// System.out time
