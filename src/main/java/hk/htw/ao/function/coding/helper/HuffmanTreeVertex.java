@@ -1,4 +1,4 @@
-package hk.htw.ao.function.coding.entities;
+package hk.htw.ao.function.coding.helper;
 
 public class HuffmanTreeVertex {
 	public char character;

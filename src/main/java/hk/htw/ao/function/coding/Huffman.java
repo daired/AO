@@ -1,18 +1,15 @@
 package hk.htw.ao.function.coding;
 
 import java.math.BigInteger;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import com.sun.org.apache.regexp.internal.CharacterArrayCharacterIterator;
-
 import java.util.PriorityQueue;
 import java.util.Queue;
 
 import hk.htw.ao.function.FunctionThread;
-import hk.htw.ao.function.coding.entities.HuffmanTreeVertex;
+import hk.htw.ao.function.coding.helper.HuffmanTreeVertex;
+import hk.htw.ao.function.coding.helper.HuffmanTreeVertexComparator;
 
 public class Huffman extends FunctionThread {
 
@@ -69,7 +66,7 @@ public class Huffman extends FunctionThread {
 
 	public static String huffmannEncode(String input, HuffmanTreeVertex root) {
 		Map<Character, String> codeMap = new HashMap<Character, String>();
-		generateCode(root, codeMap, "");
+		generateCodeMap(root, codeMap, "");
 		
 		StringBuilder stringBuilder = new StringBuilder();
 		for (int i = 0; i < input.length(); i++) {
@@ -101,13 +98,13 @@ public class Huffman extends FunctionThread {
 	}
 
 	// rekursiv, put prefixfree code as map values 
-	private static void generateCode(HuffmanTreeVertex vertex, Map<Character, String> map, String s) {
+	private static void generateCodeMap(HuffmanTreeVertex vertex, Map<Character, String> map, String s) {
 		if (vertex.left == null && vertex.right == null) {
 			map.put(vertex.character, s);
 			return;
 		}
-		generateCode(vertex.left, map, s + '0');
-		generateCode(vertex.right, map, s + '1');
+		generateCodeMap(vertex.left, map, s + '0');
+		generateCodeMap(vertex.right, map, s + '1');
 	}
 
 	// create PrioQueue
@@ -122,11 +119,6 @@ public class Huffman extends FunctionThread {
 
 	
 	// internal Helper for PrioQuery
-	private static class HuffmanTreeVertexComparator implements Comparator<HuffmanTreeVertex> {
-		@Override
-		public int compare(HuffmanTreeVertex v1, HuffmanTreeVertex v2) {
-			return v1.count - v2.count;
-		}
-	}
+
 
 }

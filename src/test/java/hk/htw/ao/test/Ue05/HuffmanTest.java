@@ -11,7 +11,7 @@ import java.nio.file.Path;
 import org.junit.Test;
 
 import hk.htw.ao.function.coding.Huffman;
-import hk.htw.ao.function.coding.entities.HuffmanTreeVertex;
+import hk.htw.ao.function.coding.helper.HuffmanTreeVertex;
 import hk.htw.ao.util.OptimizedRandom;
 
 public class HuffmanTest {
