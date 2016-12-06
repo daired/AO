@@ -33,105 +33,102 @@ public class HeapSort extends FunctionThread {
 		return res;
 	}
 	
+	/**
+	 * AO - Aufgabe 5	 * 
+	 * HeapSort implementation Rekursiv	 * 
+	 * bigInt[] --> bigInt[]
+	 * @param array : the heap
+	 */
 	public static void heapSort(BigInteger[] array){       
-        buildMinHeap(array);
-        for (int i = length; i > 0; i--) {
-            swap(array,0, i);
-            length = length-1;
-            minHeapify(array, 0);
-        }
-    }     
+	    buildMinHeap(array);
+	    for (int i = length; i > 0; i--) {
+	        swap(array,0, i);
+	        length = length-1;
+	        minHeapify(array, 0);
+	    }
+	}     
+	
+	/**
+	 * Building a minimum heap	 * 
+	 * bigInt[] --> bigInt[]	 *
+	 * @param array : the heap
+	 */
+	public static void buildMinHeap(BigInteger[] arr){
+	    length = arr.length-1;
+	    for (int i = length/2; i >= 0; i--){
+	    	minHeapify(arr, i);
+	    }
+	                
+	}
+	
+	/**
+	 * rebuild the heap rekursivly
+	 * 
+	 * @param array : the heap
+	 * @param i : the numbered heap-element
+	 */
+	public static void minHeapify(BigInteger[] array, int i) {
+	    int left = 2*i ;
+	    int right = 2*i + 1;
+	    int maximum = i;
+	    if (left <= length && array[left].compareTo( array[i] ) > 0)
+	        maximum = left;
+	    if (right <= length && array[right].compareTo( array[maximum])  > 0 )     
+	        maximum = right;
+	
+	    if (maximum != i) {
+	        swap(array, i, maximum);
+	        minHeapify(array, maximum);
+	    }
+	}    
 
 	/**
-	 * AO - Aufgabe 5
-	 * 
-	 * HeapSort implementation Rekursiv
-	 * 
-	 * bigInt[] --> bigInt[]
-	 *
+	 *  Function to swap two numbers in an array 
+	 *  
 	 */
-    public static void buildMinHeap(BigInteger[] arr){
-        length = arr.length-1;
-        for (int i = length/2; i >= 0; i--){
-        	minHeapify(arr, i);
-        }
-                    
-    }
-
-    /**
-	 * * 
-	 * Parent(i) = i / 2
-	 * Left(i) = 2i
-	 * Right(i) = 2i + 1
-	 * MaxHeap:
-	 * A[Parent(i)] >= A[i]
-	 * fuer alle Knoten i (auﬂer der Wurzel)
-	 * 
-	 * @param array
-	 * @param i
-	 */
-    public static void minHeapify(BigInteger[] array, int i) {
-        int left = 2*i ;
-        int right = 2*i + 1;
-        int maximum = i;
-        if (left <= length && array[left].compareTo( array[i] ) > 0)
-            maximum = left;
-        if (right <= length && array[right].compareTo( array[maximum])  > 0 )     
-            maximum = right;
-
-        if (maximum != i) {
-            swap(array, i, maximum);
-            minHeapify(array, maximum);
-        }
-    }    
-
-    /**
-     *  Function to swap two numbers in an array 
-     *  
-     */
-    public static void swap(BigInteger[] array, int i, int j){
-    	BigInteger tmp = array[i];
-        array[i] = array[j];
-        array[j] = tmp; 
-    } 
+	public static void swap(BigInteger[] array, int i, int j){
+		BigInteger tmp = array[i];
+	    array[i] = array[j];
+	    array[j] = tmp; 
+	} 
     
     
-    public static void heapSortInt(int[] array){       
-        buildMinHeapInt(array);
-        for (int i = length; i > 0; i--) {
-            swapInt(array,0, i);
-            length = length-1;
-            minHeapifyInt(array, 0);
-        }
-    } 
-    
-    public static void buildMinHeapInt(int[] array){
-        length = array.length-1;
-        for (int i = length/2; i >= 0; i--){
-        	minHeapifyInt(array, i);
-        }
-                    
-    }
-    
-    public static void minHeapifyInt(int[] array, int i) {
-        int left = 2*i ;
-        int right = 2*i + 1;
-        int maximum = i;
-        if (left <= length && array[left] > array[i]  )
-            maximum = left;
-        if (right <= length && array[right] >  array[maximum] )     
-            maximum = right;
-
-        if (maximum != i) {
-            swapInt(array, i, maximum);
-            minHeapifyInt(array, maximum);
-        }
-    } 
-    
-    public static void swapInt(int[] array, int i, int j){
-    	int tmp = array[i];
-        array[i] = array[j];
-        array[j] = tmp; 
-    }
+	public static void heapSortInt(int[] array){       
+	    buildMinHeapInt(array);
+	    for (int i = length; i > 0; i--) {
+	        swapInt(array,0, i);
+	        length = length-1;
+	        minHeapifyInt(array, 0);
+	    }
+	} 
+	
+	public static void buildMinHeapInt(int[] array){
+	    length = array.length-1;
+	    for (int i = length/2; i >= 0; i--){
+	    	minHeapifyInt(array, i);
+	    }
+	                
+	}
+	
+	public static void minHeapifyInt(int[] array, int i) {
+	    int left = 2*i ;
+	    int right = 2*i + 1;
+	    int maximum = i;
+	    if (left <= length && array[left] > array[i]  )
+	        maximum = left;
+	    if (right <= length && array[right] >  array[maximum] )     
+	        maximum = right;
+	
+	    if (maximum != i) {
+	        swapInt(array, i, maximum);
+	        minHeapifyInt(array, maximum);
+	    }
+	} 
+	
+	public static void swapInt(int[] array, int i, int j){
+		int tmp = array[i];
+	    array[i] = array[j];
+	    array[j] = tmp; 
+	}
 
 }

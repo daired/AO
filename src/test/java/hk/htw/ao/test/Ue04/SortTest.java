@@ -37,8 +37,8 @@ public class SortTest {
 	private final long warmuploops = 1;
 	private final long testloops = 1;
 	private final int bitlength = 64;
-	private final int growlimit = 5; 
-	private final int listlengthStarting = 100;
+	private final int growlimit = 1; 
+	private final int listlengthStarting = 16384*32;
 	
 	/**
 	 * array for time evaluation: 
@@ -189,7 +189,7 @@ public class SortTest {
 		for (int j = 0; j < growlimit; j++) {
 			
 			// Input parameter multiples of ( (10^j)*listlength ) -> standard for listlength = 100 -> 100, 1.000, 10.000, 100.000, 1.000.000
-			int[] inputArray = RANDOM.generateRandomUnsortedIntList(bitlength, (int) (listlengthStarting * (Math.pow(10.0, j))));
+			int[] inputArray = RANDOM.generateRandomUnsortedIntList(bitlength, (int) (listlengthStarting * (Math.pow(2.0, j))));
 			
 			int[] sortedArray01 = Arrays.copyOf(inputArray, inputArray.length);
 			int[] sortedArray02 = Arrays.copyOf(inputArray, inputArray.length);
@@ -257,7 +257,7 @@ public class SortTest {
 			// timetotal			=> nanoseconds /operation
 			// timetotal/1000 		=> microseconds/operation
 			// timetotal/1000/1000  => milliseconds/operation
-			System.out.println(TESTTITLE + "\nwith listlength = " +( (int) (listlengthStarting * (Math.pow(10.0, j))) ) + " and bitlength = "
+			System.out.println(TESTTITLE + "\nwith listlength = " +( (int) (listlengthStarting * (Math.pow(2.0, j))) ) + " and bitlength = "
 					+ bitlength + "\nin " + testloops + " test loops and with " + warmuploops + " warmup loops \n\n"
 					+ "For 01 :" + (timetotal01_d/1000./1000.) + " milliseconds per insertionSort operation. (Total: " + (timetotal01/1000./1000./1000.) + " seconds.)\n"
 					+ "For 02 :" + (timetotal02_d/1000./1000.) + " milliseconds per mergeSortsort operation. (Total: " + (timetotal02/1000./1000./1000.) + " seconds.)\n"
