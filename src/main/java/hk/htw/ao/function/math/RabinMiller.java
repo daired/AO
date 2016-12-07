@@ -1,6 +1,7 @@
 package hk.htw.ao.function.math;
 
 import java.math.BigInteger;
+import java.util.Random;
 
 import hk.htw.ao.function.FunctionThread;
 import hk.htw.ao.util.OptimizedRandom;
@@ -47,6 +48,8 @@ public class RabinMiller extends FunctionThread {
 		}
 		BigInteger s = n.subtract(ONE);
 		BigInteger t = new BigInteger("0");
+		BigInteger a = ZERO;
+		Random random = new Random();
 
 		while (s.mod(TWO).compareTo(ZERO) == 0) {
 			s = s.divide(TWO);
@@ -54,28 +57,36 @@ public class RabinMiller extends FunctionThread {
 		}
 
 		int k = 0;
-		while (k < 128) {
+		int countCompares01 = 0;
+		int countCompares02 = 0;
 
-			BigInteger a = RANDOM.generatePositiveRandomByBitLength(8);
+		while (k < 128) {
+			
+			a = new BigInteger(8,random);
 
 			while (!(a.compareTo(ONE) > 0) || !(a.compareTo(n) < 0)) {
-				a = RANDOM.generatePositiveRandomByBitLength(8);
+				a = new BigInteger(8,random);
 			}
-			BigInteger v = a.modPow(s, n);
+			BigInteger v= ModPow.modPow(a, s, n);
+			//BigInteger v = a.modPow(s, n);
 
 			if (!(v.compareTo(ONE) == 0)) {
 				BigInteger i = ZERO;
 				while (!(v.compareTo(n.subtract(ONE)) == 0)) {
-					if (i.compareTo(n.subtract(ONE)) == 0)
-						return false;
-					else {
-						v = v.modPow(TWO, n);
+					if (!(i.compareTo(n.subtract(ONE)) == 0)){
+						v = ModPow.modPow(v, TWO, n);
 						i = i.add(ONE);
 					}
+					else {
+						return false;
+					}
+					countCompares02++;
 				}
 			}
 			k += 2;
+			countCompares01++;
 		}
+		System.out.println("Found in "+ (countCompares01 + countCompares02 )  + " compares.");
 		return true;
 
 	}
