@@ -8,20 +8,21 @@ import hk.htw.ao.util.OptimizedRandom;
 public class RabinMiller extends FunctionThread {
 
 	private final static OptimizedRandom RANDOM = OptimizedRandom.getInstance();
+
 	private boolean res;
 
 	public RabinMiller(String[] values) {
 		super(values);
 		this.functiontask = new FunctionTask() {
 
-			// Triggered by this.runThread() - defined in abstract FunctionThread
+			// Triggered by this.runThread() - defined in abstract
+			// FunctionThread
 			// Input values, call function(s) and set result
 			protected Object call() throws Exception {
 				BigInteger n = new BigInteger(parameter[0]);
-				return res = rabinMiller(n);
-				
+				return res = isPseudoPrime(n);
 
-		    }
+			}
 		};
 	}
 
@@ -30,55 +31,53 @@ public class RabinMiller extends FunctionThread {
 	}
 
 	
-	/**
-	 * Ackermann Function (BigInt implementation)
-	 * 
-	 * @param m
-	 * @param n
-	 * @return
-	 */
-	public static boolean rabinMiller(BigInteger n){
-		
-		if(n.compareTo(new BigInteger("3")) >= 0 
-				&& n.mod(new BigInteger("2")).equals(BigInteger.ONE)){
-		
-			BigInteger s = n.subtract(BigInteger.ONE);
-			BigInteger t = BigInteger.ZERO;
-			
-			while(s.mod(new BigInteger("2")).equals(BigInteger.ZERO)){
-				s = s.divide(new BigInteger("2"));
-				t = t.add(BigInteger.ONE);
+/**
+ *  isPseudoPrime (BigInteger Implementation)
+ *  
+ *  
+ * @example
+ * boolean res = RabinMiller.isPseudoPrime(BigInteger n)
+ *  
+ * @param n
+ * @return 
+ */
+	public static boolean isPseudoPrime(BigInteger n) {
+		if (!(n.compareTo(TWO) > 0) || !(n.mod(TWO).compareTo(ONE) == 0)) {
+			return false;
+		}
+		BigInteger s = n.subtract(ONE);
+		BigInteger t = new BigInteger("0");
+
+		while (s.mod(TWO).compareTo(ZERO) == 0) {
+			s = s.divide(TWO);
+			t = t.add(ONE);
+		}
+
+		int k = 0;
+		while (k < 128) {
+
+			BigInteger a = RANDOM.generatePositiveRandomByBitLength(8);
+
+			while (!(a.compareTo(ONE) > 0) || !(a.compareTo(n) < 0)) {
+				a = RANDOM.generatePositiveRandomByBitLength(8);
 			}
-			
-			for(int k = 0; k < 128; k+=2){
-				BigInteger a = RANDOM.generatePositiveRandomByBitLength(1000);
-				BigInteger v = ModPow.modPow(a, s, n);
-				
-				if(!v.equals(BigInteger.ONE)){
-					BigInteger i = BigInteger.ZERO;
-	
-					
-					while(!v.equals(n.subtract(BigInteger.ONE))){
-						if(i.equals(t.subtract(BigInteger.ONE)))
-							return false;
-						else{
-							v = ModPow.modPow(v, new BigInteger("2"), n);
-							i = i.add(BigInteger.ONE);
-						}
-						
-						
+			BigInteger v = a.modPow(s, n);
+
+			if (!(v.compareTo(ONE) == 0)) {
+				BigInteger i = ZERO;
+				while (!(v.compareTo(n.subtract(ONE)) == 0)) {
+					if (i.compareTo(n.subtract(ONE)) == 0)
+						return false;
+					else {
+						v = v.modPow(TWO, n);
+						i = i.add(ONE);
 					}
 				}
-
 			}
-			return true;
+			k += 2;
 		}
-		else{
-			return false;
+		return true;
 
-		}
 	}
-	
-
 
 }

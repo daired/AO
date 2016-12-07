@@ -1,4 +1,4 @@
-package hk.htw.ao.test;
+package hk.htw.ao.test.Ue06;
 
 import static org.junit.Assert.*;
 
@@ -21,52 +21,80 @@ public class RabinMillerTest {
 	private boolean res;
 	
 	@Test
+	public void checkRandomBigInteger8Bit(){
+		
+		
+		BigInteger n = RANDOM.generatePositiveRandomByBitLength(8);
+		boolean testedPseudoPrime = RabinMiller.isPseudoPrime(n);
+		if(testedPseudoPrime) System.out.println(n + " is pseudoprime");
+		else{      			  System.out.println(n + " is not pseudoprime");}
+		while(!testedPseudoPrime){
+			n = RANDOM.generatePositiveRandomByBitLength(8);
+			testedPseudoPrime = RabinMiller.isPseudoPrime(n);
+			if(testedPseudoPrime) {
+				assertTrue(res == true);
+				System.out.println(n + " is pseudoprime");
+			}
+			else{      			  
+				assertTrue(res == false);
+				System.out.println(n + " is not pseudoprime");
+				}
+		}
+		
+	}
+	
+	
+	
+	@Test
 	public void checkResults() {
 
+		
+		
+		
 		n = new BigInteger("3");
-		res = RabinMiller.rabinMiller(n);
+		res = RabinMiller.isPseudoPrime(n);
 		assertTrue(res == true);
 		System.out.println("Test Rabin-Miller : \n\n"
 				+ "n : " + n	+ "\n"
 				+ "  = " + res	+ "\n");
 		
 		n = new BigInteger("4");
-		res = RabinMiller.rabinMiller(n);
+		res = RabinMiller.isPseudoPrime(n);
 		assertTrue(res == false);
 		System.out.println("Test Rabin-Miller : \n\n"
 				+ "n : " + n	+ "\n"
 				+ "  = " + res	+ "\n");
 
 		n = new BigInteger("5");
-		res = RabinMiller.rabinMiller(n);
+		res = RabinMiller.isPseudoPrime(n);
 		assertTrue(res == true);
 		System.out.println("Test Rabin-Miller : \n\n"
 				+ "n : " + n	+ "\n"
 				+ "  = " + res	+ "\n");
 		
 		n = new BigInteger("6");
-		res = RabinMiller.rabinMiller(n);
+		res = RabinMiller.isPseudoPrime(n);
 		assertTrue(res == false);
 		System.out.println("Test Rabin-Miller : \n\n"
 				+ "n : " + n	+ "\n"
 				+ "  = " + res	+ "\n");
 		
 		n = new BigInteger("7");
-		res = RabinMiller.rabinMiller(n);
+		res = RabinMiller.isPseudoPrime(n);
 		assertTrue(res == true);
 		System.out.println("Test Rabin-Miller : \n\n"
 				+ "n : " + n	+ "\n"
 				+ "  = " + res	+ "\n");
 		
 		n = new BigInteger("9");
-		res = RabinMiller.rabinMiller(n);
+		res = RabinMiller.isPseudoPrime(n);
 		assertTrue(res == false);
 		System.out.println("Test Rabin-Miller : \n\n"
 				+ "n : " + n	+ "\n"
 				+ "  = " + res	+ "\n");
 		
 		n = new BigInteger("23");
-		res = RabinMiller.rabinMiller(n);
+		res = RabinMiller.isPseudoPrime(n);
 		assertTrue(res == true);
 		System.out.println("Test Rabin-Miller : \n\n"
 				+ "n : " + n	+ "\n"

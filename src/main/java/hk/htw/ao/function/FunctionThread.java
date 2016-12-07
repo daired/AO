@@ -1,10 +1,15 @@
 package hk.htw.ao.function;
 
+import java.math.BigInteger;
+
 import javafx.concurrent.Task;
 
 public abstract class FunctionThread{
 
-	protected final long TIMEOUT_MILLIS = 1000*30; // 30 sec
+	protected final static long TIMEOUT_MILLIS = 1000*30; // 30 sec
+	protected final static BigInteger TWO = new BigInteger("2");
+	protected final static BigInteger ONE = new BigInteger("1");
+	protected final static BigInteger ZERO = new BigInteger("0");
 	
 	protected String[] parameter;
 	protected FunctionTask functiontask;
