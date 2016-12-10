@@ -3,6 +3,7 @@ package hk.htw.ao.util;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.security.SecureRandom;
+import java.util.Random;
 
 public class OptimizedRandom {
 	
@@ -31,10 +32,9 @@ public class OptimizedRandom {
 	}
 	
 	public BigInteger generatePositiveRandomByBitLength(int bitlength){
-		SecureRandom random = new SecureRandom();
-	    byte bytes[] = bitlength < 8 ?  new byte[1] : new byte[bitlength/8];
-	    random.nextBytes(bytes);
-	    BigInteger result = new BigInteger(bytes).abs();
+		Random random = new Random();
+	    
+	    BigInteger result = new BigInteger(bitlength, random);
 	    result = checkBitlength(result, bitlength);
 		return result;
 	}
@@ -73,9 +73,9 @@ public class OptimizedRandom {
 	
 	private BigInteger leftShift(BigInteger valueToShift, int bitsGoal){
 		int bitLengthDifference = bitsGoal - valueToShift.bitLength();
-		for(int i = 0; i < bitLengthDifference; i++){
-			valueToShift = valueToShift.flipBit(bitsGoal-i-1);
-		}
+		
+		valueToShift = valueToShift.flipBit(bitsGoal-1);
+	
 		return valueToShift;
 	}
 

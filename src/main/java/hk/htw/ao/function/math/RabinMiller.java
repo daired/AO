@@ -23,7 +23,7 @@ public class RabinMiller extends FunctionThread {
 			// Input values, call function(s) and set result
 			protected Object call() throws Exception {
 				BigInteger n = new BigInteger(parameter[0]);
-				return res = isPseudoPrime(n);
+				return res = isPseudoPrime(n,128);
 
 			}
 		};
@@ -44,7 +44,7 @@ public class RabinMiller extends FunctionThread {
  * @param n
  * @return 
  */
-	public static boolean isPseudoPrime(BigInteger n) {
+	public static boolean isPseudoPrime(BigInteger n, int certainty) {
 		if (!(n.compareTo(TWO) > 0) || !(n.mod(TWO).compareTo(ONE) == 0)) {
 			return false;
 		}
@@ -65,7 +65,7 @@ public class RabinMiller extends FunctionThread {
 		int countCompares01 = 0;
 		int countCompares02 = 0;
 
-		while (k < 128) {
+		while (k < certainty) {
 			if(DOLOGGING){
 				System.out.println("k: " + k);
 			}
@@ -74,7 +74,7 @@ public class RabinMiller extends FunctionThread {
 
 			while (!(a.compareTo(ONE) > 0) || !(a.compareTo(n) < 0)) {
 				if(DOLOGGING){
-					System.out.println("regenerated a: (" + a.bitLength() +")");
+					System.out.println("regenerated a: (" + a.bitLength() +") for n: " + n + "(" + n.bitLength() + ")");
 				}
 				
 				a = RANDOM.generatePositiveRandomByBitLength(n.bitLength());
@@ -112,7 +112,10 @@ public class RabinMiller extends FunctionThread {
 			k += 2;
 			countCompares01++;
 		}
-		System.out.println("Found in "+ (countCompares01 + countCompares02 )  + " compares.");
+		if(DOLOGGING){
+			System.out.println("Found in "+ (countCompares01 + countCompares02 )  + " compares.");
+		}
+		
 		return true;
 
 	}
