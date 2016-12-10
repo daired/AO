@@ -155,6 +155,7 @@ public class RabinMillerTest {
 			}
 		}
 	}	
+	
 	@Ignore
 	@Test
 	public void testHowManyPrimesExistsUnderONEMillion(){
@@ -190,6 +191,7 @@ public class RabinMillerTest {
 	
 	// 3a. Wie viele Primzahlen < 1.000.000 findet Ihr Programm? 
 	
+	@Ignore
 	@Test
 	public void howManyPrimeUnderMillion(){
 		int numbersToTest = 1000000;
@@ -245,9 +247,11 @@ public class RabinMillerTest {
 		if(testedPseudoPrime) System.out.println(n + " is pseudoprime");
 		else{      			  System.out.println(n + " is not pseudoprime");}
 		BigInteger i = ZERO;
+		int count = 1;
 		while(!testedPseudoPrime){
 			n = RANDOM.generatePositiveRandomByBitLength(512);
-			testedPseudoPrime = n.isProbablePrime(2);
+			testedPseudoPrime = n.isProbablePrime(128);
+			count ++;
 			if(testedPseudoPrime) {
 				assertTrue(testedPseudoPrime == true);
 				System.out.println(n + " is pseudoprime");
@@ -258,9 +262,30 @@ public class RabinMillerTest {
 				}
 			i.add(ONE);
 		}
-		//System.out.println(i + " is not pseudoprime");
+		System.out.println(count + " 512-bit-numbers tested to find out, that " + n + " is a real Pseudoprime.");
 
 		
+	}
+	
+	@Test
+	public void checkFor_A_And_N(){
+		BigInteger n = RANDOM.generatePositiveRandomByBitLength(64);
+		boolean testedPseudoPrime = RabinMiller.isPseudoPrime(n, 128);
+		BigInteger i = ZERO;
+		while(!testedPseudoPrime){
+			n = RANDOM.generatePositiveRandomByBitLength(64);
+			testedPseudoPrime = RabinMiller.isPseudoPrime(n,128);
+			if(testedPseudoPrime) {
+				assertTrue(testedPseudoPrime == true);
+				System.out.println(n + " is pseudoprime");
+				
+			}
+			else{      			  
+				assertTrue(testedPseudoPrime == false);
+				System.out.println(n + " is not pseudoprime");
+				}
+			i.add(ONE);
+		}
 	}
 	
 	@Ignore

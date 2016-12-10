@@ -51,7 +51,7 @@ public class RabinMiller extends FunctionThread {
 		BigInteger s = n.subtract(ONE);
 		BigInteger t = new BigInteger("0");
 		BigInteger a = ZERO;
-
+	
 		while (s.mod(TWO).compareTo(ZERO) == 0) {
 			s = s.divide(TWO);
 			t = t.add(ONE);			
@@ -60,18 +60,18 @@ public class RabinMiller extends FunctionThread {
 			System.out.println("divisions (s,t) processed.");
 		}
 		
-
+	
 		int k = 0;
 		int countCompares01 = 0;
 		int countCompares02 = 0;
-
+	
 		while (k < certainty) {
 			if(DOLOGGING){
 				System.out.println("k: " + k);
 			}
 			
 			a = RANDOM.generatePositiveRandomByBitLength(n.bitLength());
-
+	
 			while (!(a.compareTo(ONE) > 0) || !(a.compareTo(n) < 0)) {
 				if(DOLOGGING){
 					System.out.println("regenerated a: (" + a.bitLength() +") for n: " + n + "(" + n.bitLength() + ")");
@@ -104,6 +104,7 @@ public class RabinMiller extends FunctionThread {
 						
 					}
 					else {
+						System.out.println();
 						return false;
 					}
 					countCompares02++;
@@ -117,7 +118,9 @@ public class RabinMiller extends FunctionThread {
 		}
 		
 		return true;
-
+	
 	}
+	
+	
 
 }
