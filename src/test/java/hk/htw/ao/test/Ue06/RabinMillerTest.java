@@ -19,30 +19,52 @@ public class RabinMillerTest {
 	protected final static BigInteger ONE = new BigInteger("1");
 	protected final static BigInteger ZERO = new BigInteger("0");
 	protected final static BigInteger ONE_THOUSAND = new BigInteger("1000");
+	private final boolean DOLOGGING = true;
 
 	private BigInteger n;
 	private boolean res;
 	
 	@Ignore
 	@Test
-	public void checkRandomBigInteger8Bit(){
+	public void testBitLength(){
+		for(int i=0;i<10;i++){
+			BigInteger n = RANDOM.generatePositiveRandomByBitLength(512);
+			if(DOLOGGING){
+				System.out.println(n.bitLength());
+			}
+		}
+		
+	}
+	
+	
+	@Test
+	public void checkRealRandomBigInteger512Bit(){
 		
 		
-		BigInteger n = RANDOM.generatePositiveRandomByBitLength(8);
+		BigInteger n = RANDOM.generatePositiveRandomByBitLength(512);
 		boolean testedPseudoPrime = RabinMiller.isPseudoPrime(n);
-		if(testedPseudoPrime) System.out.println(n + " is pseudoprime");
+		if(DOLOGGING){
+			if(testedPseudoPrime) System.out.println(n + " is pseudoprime");
 		else{      			  System.out.println(n + " is not pseudoprime");}
+		}
+		
 		while(!testedPseudoPrime){
-			n = RANDOM.generatePositiveRandomByBitLength(8);
+			n = RANDOM.generatePositiveRandomByBitLength(512);
 			testedPseudoPrime = RabinMiller.isPseudoPrime(n);
 			if(testedPseudoPrime) {
 				assertTrue(testedPseudoPrime == true);
-				System.out.println(n + " is pseudoprime");
+				if(DOLOGGING){
+					System.out.println(n + " is pseudoprime");
+				}
+				
 			}
 			else{      			  
 				assertTrue(testedPseudoPrime == false);
-				System.out.println(n + " is not pseudoprime");
+				if(DOLOGGING){
+					System.out.println(n + " is not pseudoprime");
 				}
+				
+			}
 		}
 		
 	}
@@ -91,7 +113,7 @@ public class RabinMillerTest {
 		
 	}
 	
-	
+	@Ignore
 	@Test
 	public void checkRandomBigInteger512Bit(){
 		
