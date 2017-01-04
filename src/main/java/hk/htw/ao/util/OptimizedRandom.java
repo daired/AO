@@ -3,6 +3,7 @@ package hk.htw.ao.util;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.security.SecureRandom;
+import java.util.Random;
 
 public class OptimizedRandom {
 	
@@ -25,15 +26,19 @@ public class OptimizedRandom {
 		SecureRandom random = new SecureRandom();
 	    byte bytes[] = bitlength < 8 ?  new byte[1] : new byte[bitlength/8];
 	    random.nextBytes(bytes);
-		return BigInteger.probablePrime(bitlength, random);
+	    BigInteger checked = BigInteger.probablePrime(bitlength, random);
+	    checked = checkBitlength(checked, bitlength);
+		return checked;
 	}
 	
 	public BigInteger generatePositiveRandomByBitLength(int bitlength){
-		SecureRandom random = new SecureRandom();
-	    byte bytes[] = bitlength < 8 ?  new byte[1] : new byte[bitlength/8];
-	    random.nextBytes(bytes);
-		return new BigInteger(bytes).abs();
+		Random random = new Random();
+	    
+	    BigInteger result = new BigInteger(bitlength, random);
+	    result = checkBitlength(result, bitlength);
+		return result;
 	}
+	
 	
 	public BigInteger[] generateRandomUnsortedBigIntList(int bitlength, int Listlength){
 	    BigInteger[] list = new BigInteger[Listlength];
@@ -41,7 +46,7 @@ public class OptimizedRandom {
 		  for (int i = 0; i < Listlength; i++){
 			byte bytes[] = bitlength < 8 ?  new byte[1] : new byte[bitlength/8];
 			random.nextBytes(bytes);
-			list[i] = new BigInteger(bytes).abs();
+			list[i] = checkBitlength(new BigInteger(bytes).abs(), bitlength );
 		  }
 	     return list;
 	}
@@ -57,6 +62,21 @@ public class OptimizedRandom {
 
 		  }
 	     return list;
+	}
+	
+
+	private BigInteger checkBitlength(BigInteger valueToCheck, int bitsGoal){
+		int bitLengthDifference = bitsGoal - valueToCheck.bitLength();
+		valueToCheck = bitLengthDifference > 0 ? leftShift(valueToCheck, bitsGoal) :  valueToCheck;	    		
+		return valueToCheck;
+	}
+	
+	private BigInteger leftShift(BigInteger valueToShift, int bitsGoal){
+		int bitLengthDifference = bitsGoal - valueToShift.bitLength();
+		
+		valueToShift = valueToShift.flipBit(bitsGoal-1);
+	
+		return valueToShift;
 	}
 
 }
