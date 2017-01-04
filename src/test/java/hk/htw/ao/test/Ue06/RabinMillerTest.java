@@ -96,14 +96,14 @@ public class RabinMillerTest {
 	public void checkRandomBigInteger512Bit(){
 		
 		BigInteger n = RANDOM.generatePositiveRandomByBitLength(512);
-		System.out.println("Generated Random Big Int: " + n);
+		//System.out.println("Generated Random Big Int: " + n);
 		boolean testedPseudoPrime = RabinMiller.isPseudoPrime(n);
 		if(testedPseudoPrime) System.out.println(n + " is pseudoprime");
 		else{      			  System.out.println(n + " is not pseudoprime");}
 		BigInteger i = ZERO;
 		while(!testedPseudoPrime){
 			n = RANDOM.generatePositiveRandomByBitLength(512);
-			testedPseudoPrime = n.isProbablePrime(2);
+			testedPseudoPrime = n.isProbablePrime(4);
 			if(testedPseudoPrime) {
 				assertTrue(testedPseudoPrime == true);
 				System.out.println(n + " is pseudoprime");
