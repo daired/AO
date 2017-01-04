@@ -1,6 +1,7 @@
 package hk.htw.ao.function.graph;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Graph {
 
@@ -12,17 +13,79 @@ public class Graph {
 		edges = new ArrayList<Edge>();
 	}
 
-	private void dijkstra() {
-		// TODO Auto-generated method stub
+	private void dijkstra(Vertex start) {
+		for (Vertex v : vertices){
+			v.setD(Integer.MAX_VALUE);
+			v.setPi(null);
+		}
+		start.setD(0);
+		ArrayList<Vertex> S = new ArrayList<Vertex>();
+		MinimumVertexHeap heap = new MinimumVertexHeap(vertices);
+		System.out.println((heap.toString()));
+		while(!heap.isEmpty()){
+			Vertex u = heap.extractMin();
+			S.add(u);
+			for(Vertex v : getNeighbours(u)){
+				if(getWeight(u,v) != -1.0){
+					if(v.getD() > u.getD() + getWeight(u,v) ){
+						v.setD(   u.getD() + getWeight(u,v) );
+						v.setPi(u);
+					}
+					
+				}
+				
+			}
+		}
+	//	System.out.println("debug point");
+	}
+	
+	public ArrayList<Vertex> getShortestPath(Vertex start, Vertex goal){
+		ArrayList<Vertex> result = new ArrayList<Vertex>();
+		result.add(goal);		
+		Vertex next = goal.getPi();
+		
+		while(next != start){
+			result.add(next);
+			next = next.getPi();			
+		}
+		result.add(next);
+		//System.out.println(result);
+		// reverse !!
+		ArrayList<Vertex> reversed = new ArrayList<Vertex>();
+		for(int i=0;i< result.size();i++){
+			reversed.add( result.get(result.size()-1 - i));
+		}
+		System.out.println("Shortest path from " + start.getId() + " to " + goal.getId() + " is:\n" 
+				+ reversed.toString());
+		return reversed;
 		
 	}
 	
+	private double getWeight(Vertex u, Vertex v) {
+		for(Edge e : edges){
+			if(e.getSource().getId().equals(u.getId()) && e.getSink().getId().equals(v.getId())){
+				return e.getWeight();
+			}
+		}
+		return -1.0; 
+	}
+
 	public void addVertex(Vertex toAdd){
 		vertices.add(toAdd);
 	}
 	
 	public void addEdge(Edge e){
 		edges.add(e);
+		
+	}
+	
+	public Vertex getVertexById(String id){
+		for(Vertex v : vertices){
+			if(v.getId().equals(id)){
+				return v;
+			}
+		}
+		return null;
 	}
 	
 	public Vertex getVertexByIdString(String id){
@@ -63,7 +126,11 @@ public class Graph {
 
 	private void run() {
 		init();
-		dijkstra();
+		System.out.println(this.toString());
+		// do dijkstra from start vertex "s"
+		dijkstra(getVertexById("t"));
+		ArrayList<Vertex> path = getShortestPath(getVertexById("s"), getVertexById("s"));
+		//System.out.println(path);
 		
 	}
 
@@ -98,7 +165,23 @@ public class Graph {
 		Edge zs = new Edge(z, s, 7.0);
 		addEdge(zs);
 		Edge zx = new Edge(z, x, 6.0);
-		addEdge(zx);
+		addEdge(zx); 
+	}
+	
+	public String toString(){
+		String result = "Graph:\nVertices: \n";
+		for(Vertex v : vertices){
+			result += "[";
+			ArrayList<Vertex> n = getNeighbours(v);
+			result += v.getId() + "]->neighbors: [";
+			for(Vertex v2 : n){
+				result += v2.getId() + ",";
+			}
+			result = result.substring(0,result.length()-1);
+			result += "]\n";
+		}
+		
+		return result;
 	}
 
 }

@@ -4,7 +4,7 @@ public class Vertex {
 
 	private String id;
 	private int value;
-	private int d;
+	private double d;
 	private Vertex pi;
 	
 	public Vertex(String id, int val) {
@@ -25,15 +25,15 @@ public class Vertex {
 	}
 
 	public void setValue(int value) {
-		this.value = value;
+		this.value = value; 
 	}
 
-	public int getD() {
+	public double getD() {
 		return d;
 	}
 
-	public void setD(int d) {
-		this.d = d;
+	public void setD(double e) {
+		this.d = e;
 	}
 
 	public Vertex getPi() {
@@ -45,6 +45,10 @@ public class Vertex {
 	}	
 
 	public String toString(){
-		return ("id:" + id + ", value:" + value + ", d:" + d + ", pi:" + pi.getId());
+		String result = "id:" + id + ", value:" + value + ", d:" + d ;
+		if (pi != null){
+			result += ", pi:" + pi.getId();
+		}
+		return (result + "\n");
 	}
 }

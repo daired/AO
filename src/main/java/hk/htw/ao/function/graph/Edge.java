@@ -9,7 +9,7 @@ public class Edge {
 	public Edge(Vertex src, Vertex dest, double weight) {
 		this.source = src;
 		this.sink = dest;
-		this.weight = weight;
+		this.weight = weight; 
 	}
 
 	public Vertex getSource() {

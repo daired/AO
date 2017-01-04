@@ -41,7 +41,7 @@ public class OptimizedRandom {
 	
 	
 	public BigInteger[] generateRandomUnsortedBigIntList(int bitlength, int Listlength){
-	    BigInteger[] list = new BigInteger[Listlength];
+	    BigInteger[] list = new BigInteger[Listlength]; 
 		SecureRandom random = new SecureRandom();
 		  for (int i = 0; i < Listlength; i++){
 			byte bytes[] = bitlength < 8 ?  new byte[1] : new byte[bitlength/8];
@@ -53,14 +53,19 @@ public class OptimizedRandom {
 	
 	public int[] generateRandomUnsortedIntList(int bitlength, int Listlength){
 	    int[] list = new int[Listlength];
-		SecureRandom random = new SecureRandom();
-		  for (int i = 0; i < Listlength; i++){
-			byte bytes[] = bitlength < 8 ?  new byte[1] : new byte[bitlength/8];
-			random.nextBytes(bytes);	
-			ByteBuffer wrapped = ByteBuffer.wrap(bytes);
-			list[i] = Math.abs(wrapped.getInt());
-
-		  }
+	    Random r = new Random();
+	    for(int i=0;i<Listlength;i++){
+	    	int next = r.nextInt((int)Math.pow(2, bitlength));
+	    	list[i] = next;
+	    }
+//		SecureRandom random = new SecureRandom();
+//		  for (int i = 0; i < Listlength; i++){
+//			byte bytes[] = bitlength < 8 ?  new byte[1] : new byte[bitlength/8];
+//			random.nextBytes(bytes);	
+//			ByteBuffer wrapped = ByteBuffer.wrap(bytes);
+//			list[i] = Math.abs(wrapped.getInt());
+//
+//		  }
 	     return list;
 	}
 	
