@@ -129,7 +129,7 @@ public class Graph {
 		System.out.println(this.toString());
 		// do dijkstra from start vertex "s"
 		dijkstra(getVertexById("t"));
-		ArrayList<Vertex> path = getShortestPath(getVertexById("s"), getVertexById("s"));
+		ArrayList<Vertex> path = getShortestPath(getVertexById("t"), getVertexById("z"));
 		//System.out.println(path);
 		
 	}
